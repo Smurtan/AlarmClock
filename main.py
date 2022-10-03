@@ -1,8 +1,9 @@
 import sys
 
-from PyQt6.QtCore import QSize
+from PyQt6.QtCore import QSize, QTimer, QRect
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
-QMainWindow, QApplication, QFrame
+QMainWindow, QApplication, QFrame, QLabel
 )
 
 
@@ -22,18 +23,26 @@ class MainWindow(QMainWindow):
 
         # external content container
         self.container = QFrame()
-        self.container.setContentsMargins(10, 10, 10, 10)
-        # ?
-        self.container.setFrameShape(QFrame.Shape.NoFrame)
-        self.container.setFrameShadow(QFrame.Shadow.Raised)
 
         self.circle_bg = QFrame(self.container)
-        self.circle_bg.setMinimumSize(QSize(610, 610))
-        self.circle_bg.setMaximumSize(QSize(610, 610))
-        self.circle_bg.setContentsMargins(20, 20, 20, 20)
-        # ?
-        self.circle_bg.setFrameShape(QFrame.Shape.NoFrame)
-        self.circle_bg.setFrameShadow(QFrame.Shadow.Raised)
+        self.circle_bg.setMinimumSize(QSize(620, 620))
+        self.circle_bg.setMaximumSize(QSize(620, 620))
+        self.circle_bg.setProperty("class", "circle_bg")
+
+        self.header = QFrame(self.circle_bg)
+        self.header.setGeometry(QRect(0, 0, 620, 270))
+        self.header.setProperty("class", "header")
+
+        self.font_time = QFont()
+        self.font_time.setFamily("Segoe UI")
+        self.font_time.setPointSize(75)
+        self.font_time.setWeight(50)
+
+        self.time_label = QLabel(self.header)
+        self.time_label.setGeometry(QRect(220, 60, 291, 131))
+        self.time_label.setFont(self.font_time)
+        self.time_label.setText('00:00')
+        self.time_label.setProperty("class", "time_label")
 
         self.setCentralWidget(self.container)
 

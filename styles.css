@@ -1,5 +1,11 @@
-QFrame {
+.circle_bg {
     background-color: #282a36;
     color: #f8f8f2;
-    border-radius: 305px;
+    border-radius: 310px;
+}
+.header {
+    background-color: rgba(0, 0, 0, 0);
+}
+.time_label {
+    color: #f8f8f2;
 }
