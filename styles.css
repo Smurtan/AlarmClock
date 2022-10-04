@@ -4,8 +4,11 @@
     border-radius: 310px;
 }
 .header {
-    background-color: rgba(0, 0, 0, 0);
+    background: none;
 }
 .time_label {
     color: #f8f8f2;
+}
+.alarm_clock_area {
+    background: none;
 }
