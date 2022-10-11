@@ -3,7 +3,8 @@ import sys
 from PyQt6.QtCore import QSize, QTimer, QRect, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
-QMainWindow, QApplication, QFrame, QLabel
+QMainWindow, QApplication, QFrame, QLabel,
+QGroupBox
 )
 
 
@@ -30,25 +31,33 @@ class MainWindow(QMainWindow):
         self.circle_bg.setProperty("class", "circle_bg")
 
         self.header = QFrame(self.circle_bg)
-        self.header.setGeometry(QRect(0, 0, 620, 270))
+        self.header.setGeometry(QRect(0, 0, 620, 230))
         self.header.setProperty("class", "header")
 
         self.font_time = QFont()
         self.font_time.setFamily("Segoe UI")
         self.font_time.setPointSize(75)
 
-        self.time_label = QLabel(self.header)
-        #self.time_label.setGeometry(QRect(195, 47, 290, 130))
+        self.time_label = QLabel("00:00", self.header)
+        self.time_label.setGeometry(QRect(0, 0, 620, 230))
+        self.time_label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         self.time_label.setFont(self.font_time)
-        self.time_label.setText('00:00')
         self.time_label.setProperty("class", "time_label")
-        self.time_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
-        self.alarm_clock_area = QFrame(self.circle_bg)
-        self.alarm_clock_area.setGeometry(QRect(0, 270, 620, 350))
+        self.alarm_clock_area = QGroupBox(self.circle_bg)
+        self.alarm_clock_area.setGeometry(QRect(0, 230, 620, 390))
+        self.alarm_clock_area.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
 
+        self.alarm = QFrame(self.alarm_clock_area)
+        self.alarm.setMinimumSize(300, 90)
+        self.alarm.setMaximumSize(620, 90)
+        self.alarm.setProperty("class", "alarm")
 
+        self.alarm_1 = QFrame(self.alarm_clock_area)
+        self.alarm_1.setMinimumSize(300, 90)
+        self.alarm_1.setMaximumSize(620, 90)
+        self.alarm_1.setProperty("class", "alarm")
 
         self.setCentralWidget(self.container)
 

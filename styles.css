@@ -10,5 +10,9 @@
     color: #f8f8f2;
 }
 .alarm_clock_area {
-    background: none;
+    background: #5bb3fa;
+    border: none;
+}
+.alarm {
+    background: #fff5ff;
 }
