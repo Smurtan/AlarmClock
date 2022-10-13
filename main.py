@@ -3,17 +3,15 @@ import sys
 from PyQt6.QtCore import QSize, QTimer, QRect, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
-QMainWindow, QApplication, QFrame, QLabel,
-QGroupBox
+    QMainWindow, QApplication, QFrame, QLabel,
+    QGroupBox, QVBoxLayout
 )
 
 
 class MainWindow(QMainWindow):
-
     """The class describes the main application window"""
 
     def __init__(self):
-
         """Contains settings of the main window and widgets"""
 
         super(MainWindow, self).__init__()
@@ -44,20 +42,24 @@ class MainWindow(QMainWindow):
         self.time_label.setFont(self.font_time)
         self.time_label.setProperty("class", "time_label")
 
-        self.alarm_clock_area = QGroupBox(self.circle_bg)
+        self.alarm_clock_area = QFrame(self.circle_bg)
         self.alarm_clock_area.setGeometry(QRect(0, 230, 620, 390))
-        self.alarm_clock_area.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
 
         self.alarm = QFrame(self.alarm_clock_area)
-        self.alarm.setMinimumSize(300, 90)
-        self.alarm.setMaximumSize(620, 90)
+        self.alarm.setMinimumSize(500, 90)
+        self.alarm.setMaximumSize(500, 90)
         self.alarm.setProperty("class", "alarm")
 
         self.alarm_1 = QFrame(self.alarm_clock_area)
         self.alarm_1.setMinimumSize(300, 90)
-        self.alarm_1.setMaximumSize(620, 90)
+        self.alarm_1.setMaximumSize(300, 90)
         self.alarm_1.setProperty("class", "alarm")
+
+        self.verticalLayout = QVBoxLayout(self.alarm_clock_area)
+        self.verticalLayout.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout.addWidget(self.alarm, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout.addWidget(self.alarm_1, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.setCentralWidget(self.container)
 
