@@ -10,10 +10,24 @@
     color: #f8f8f2;
 }
 .alarm_clock_area {
-    background: #5bb3fa;
+    background: none;
     border: none;
 }
+/* -----------I divided the colors for a while --------------------------*/
 .alarm {
     background: #fff5ff;
-    border-radius: 45px;
+    border-radius: 50px;
 }
+.alarm_1 {
+    background: #b029b0;
+    border-radius: 50px;
+}
+.alarm_2 {
+    background: #29b078;
+    border-radius: 50px;
+}
+.alarm_3 {
+    background: #b02929;
+    border-radius: 50px;
+}
+/*----------------------------------------------------------------------*/
