@@ -4,7 +4,7 @@ from PyQt6.QtCore import QSize, QTimer, QRect, Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
-    QVBoxLayout, QScrollArea, QScroller
+    QVBoxLayout, QScrollArea, QScroller, QScrollBar
 )
 
 
@@ -24,8 +24,7 @@ class MainWindow(QMainWindow):
         self.container = QFrame()
 
         self.circle_bg = QFrame(self.container)
-        self.circle_bg.setMinimumSize(QSize(620, 620))
-        self.circle_bg.setMaximumSize(QSize(620, 620))
+        self.circle_bg.setGeometry(QRect(0, 0, 620, 620))
         self.circle_bg.setProperty("class", "circle_bg")
 
         self.header = QFrame(self.circle_bg)
@@ -43,7 +42,6 @@ class MainWindow(QMainWindow):
         self.time_label.setProperty("class", "time_label")
 
         self.alarm_clock_area = QFrame(self.circle_bg)
-        self.alarm_clock_area.setGeometry(QRect(0, 230, 620, 390))
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
 
 # ------------------------------so far, I will create my own alarm clocks for placement-------------------------
@@ -68,17 +66,19 @@ class MainWindow(QMainWindow):
         self.alarm_3.setProperty("class", "alarm_3")
 # ----------------------------------------------------------------------------------------------------------------
 
-        self.verticalLayout = QVBoxLayout(self.alarm_clock_area)
-        self.verticalLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.verticalLayout.setSpacing(15)
+        self.vertical_layout = QVBoxLayout(self.alarm_clock_area)
+        self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.vertical_layout.setSpacing(15)
         # It was decided to align each added widget individually, because they have different sizes
-        self.verticalLayout.addWidget(self.alarm, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.verticalLayout.addWidget(self.alarm_1, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.verticalLayout.addWidget(self.alarm_2, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.verticalLayout.addWidget(self.alarm_3, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.alarm, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.alarm_1, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.alarm_2, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.alarm_3, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        self.scroller = QScroller.scroller(self.alarm_clock_area)
-        self.scroller.activeScrollers()
+        self.alarm_scroll_area = QScrollArea(self.circle_bg)
+        self.alarm_scroll_area.setGeometry(QRect(0, 230, 620, 390))
+        self.alarm_scroll_area.setProperty("class", "alarm_scroll_area")
+        self.alarm_scroll_area.setWidget(self.alarm_clock_area)
 
         self.setCentralWidget(self.container)
 
