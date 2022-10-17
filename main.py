@@ -1,10 +1,10 @@
 import sys
 
 from PyQt6.QtCore import QSize, QTimer, QRect, Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
-    QVBoxLayout, QScrollArea, QScroller, QScrollBar
+    QVBoxLayout, QScrollArea, QHBoxLayout
 )
 
 
@@ -42,6 +42,7 @@ class MainWindow(QMainWindow):
         self.time_label.setProperty("class", "time_label")
 
         self.alarm_clock_area = QFrame(self.circle_bg)
+        self.alarm_clock_area.setGeometry(QRect(0, 0, 620, 460))
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
 
 # ------------------------------so far, I will create my own alarm clocks for placement-------------------------
@@ -61,10 +62,34 @@ class MainWindow(QMainWindow):
         self.alarm_2.setProperty("class", "alarm_2")
 
         self.alarm_3 = QFrame(self.alarm_clock_area)
-        self.alarm_3.setMinimumSize(370, 100)
-        self.alarm_3.setMaximumSize(370, 100)
+        self.alarm_3.setMinimumSize(260, 100)
+        self.alarm_3.setMaximumSize(260, 100)
         self.alarm_3.setProperty("class", "alarm_3")
 # ----------------------------------------------------------------------------------------------------------------
+
+        self.font_alarm_time_enable = QFont()
+        self.font_alarm_time_enable.setFamily("Segoe UI")
+        self.font_alarm_time_enable.setBold(True)
+        self.font_alarm_time_enable.setPointSize(20)
+
+        self.font_alarm_time_disable = QFont()
+        self.font_alarm_time_disable.setFamily("Segoe UI")
+        self.font_alarm_time_disable.setPointSize(20)
+
+        #self.alarm_icon_sun = QLabel(self.alarm)
+        #self.alarm_icon_sun.setPixmap(QPixmap('image/icon_sun.png'))
+        self.alarm_icon_moon = QLabel(self.alarm)
+        self.alarm_icon_moon.setPixmap(QPixmap('image/icon_moon.png'))
+        self.alarm_icon_moon.setMargin(10)
+
+        self.alarm_time = QLabel("00:00", self.alarm)
+        self.alarm_time.setFont(self.font_alarm_time_enable)
+
+        self.horizontal_layout = QHBoxLayout(self.alarm)
+        self.horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.horizontal_layout.setSpacing(15)
+        self.horizontal_layout.addWidget(self.alarm_icon_moon, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.horizontal_layout.addWidget(self.alarm_time, alignment=Qt.AlignmentFlag.AlignLeft)
 
         self.vertical_layout = QVBoxLayout(self.alarm_clock_area)
         self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -76,7 +101,9 @@ class MainWindow(QMainWindow):
         self.vertical_layout.addWidget(self.alarm_3, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.alarm_scroll_area = QScrollArea(self.circle_bg)
-        self.alarm_scroll_area.setGeometry(QRect(0, 230, 620, 390))
+        self.alarm_scroll_area.setGeometry(QRect(0, 230, 620, 350))
+        self.alarm_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.alarm_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.alarm_scroll_area.setProperty("class", "alarm_scroll_area")
         self.alarm_scroll_area.setWidget(self.alarm_clock_area)
 
