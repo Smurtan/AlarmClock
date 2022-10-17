@@ -1,14 +1,40 @@
 .circle_bg {
     background-color: #282a36;
-    color: #f8f8f2;
     border-radius: 310px;
 }
+
 .header {
     background: none;
 }
+
 .time_label {
     color: #f8f8f2;
 }
+
 .alarm_clock_area {
     background: none;
+    border: none;
 }
+
+.alarm_scroll_area {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+/* -----------I divided the colors for a while --------------------------*/
+.alarm {
+    background: #fff5ff;
+    border-radius: 50%;
+}
+.alarm_1 {
+    background: #b029b0;
+    border-radius: 50%;
+}
+.alarm_2 {
+    background: #29b078;
+    border-radius: 50%;
+}
+.alarm_3 {
+    background: #b02929;
+    border-radius: 50%;
+}
+/*----------------------------------------------------------------------*/
