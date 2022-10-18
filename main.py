@@ -4,7 +4,7 @@ from PyQt6.QtCore import QSize, QTimer, QRect, Qt
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
-    QVBoxLayout, QScrollArea, QHBoxLayout
+    QVBoxLayout, QScrollArea, QHBoxLayout, QCheckBox
 )
 
 
@@ -67,29 +67,35 @@ class MainWindow(QMainWindow):
         self.alarm_3.setProperty("class", "alarm_3")
 # ----------------------------------------------------------------------------------------------------------------
 
+        # the area with the alarm time and the icon, for left alignment
+        self.space_for_time = QFrame(self.alarm)
+        self.space_for_time.setProperty("class", "space_for_time")
+
         self.font_alarm_time_enable = QFont()
         self.font_alarm_time_enable.setFamily("Segoe UI")
         self.font_alarm_time_enable.setBold(True)
-        self.font_alarm_time_enable.setPointSize(20)
+        self.font_alarm_time_enable.setPointSize(26)
 
         self.font_alarm_time_disable = QFont()
         self.font_alarm_time_disable.setFamily("Segoe UI")
-        self.font_alarm_time_disable.setPointSize(20)
+        self.font_alarm_time_disable.setPointSize(26)
 
-        #self.alarm_icon_sun = QLabel(self.alarm)
-        #self.alarm_icon_sun.setPixmap(QPixmap('image/icon_sun.png'))
-        self.alarm_icon_moon = QLabel(self.alarm)
-        self.alarm_icon_moon.setPixmap(QPixmap('image/icon_moon.png'))
-        self.alarm_icon_moon.setMargin(10)
+        self.icon_sun = QPixmap('image/icon_sun.png')
+        self.icon_moon = QPixmap('image/icon_moon.png')
+        self.alarm_icon = QLabel(self.space_for_time)
+        self.alarm_icon.setMargin(10)
+        self.alarm_icon.setPixmap(self.icon_moon)
 
-        self.alarm_time = QLabel("00:00", self.alarm)
+        self.alarm_time = QLabel("00:00", self.space_for_time)
         self.alarm_time.setFont(self.font_alarm_time_enable)
+
+        self.alarm_checkbox = QCheckBox(self.alarm)
 
         self.horizontal_layout = QHBoxLayout(self.alarm)
         self.horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.horizontal_layout.setSpacing(15)
-        self.horizontal_layout.addWidget(self.alarm_icon_moon, alignment=Qt.AlignmentFlag.AlignLeft)
-        self.horizontal_layout.addWidget(self.alarm_time, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.horizontal_layout.addWidget(self.space_for_time, alignment=Qt.AlignmentFlag.AlignRight)
+        self.horizontal_layout.addWidget(self.alarm_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
 
         self.vertical_layout = QVBoxLayout(self.alarm_clock_area)
         self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)

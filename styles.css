@@ -20,6 +20,10 @@
     border: none;
     background-color: rgba(0, 0, 0, 0);
 }
+
+.space_for_time {
+    background: none;
+}
 /* -----------I divided the colors for a while --------------------------*/
 .alarm {
     background: #fff5ff;
