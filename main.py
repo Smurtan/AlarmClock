@@ -8,17 +8,15 @@ from PyQt6.QtWidgets import (
 )
 
 
-class MainWindow(QMainWindow):
+class Ui_MainWindow:
     """The class describes the main application window"""
 
-    def __init__(self):
+    def __init__(self, Window):
         """Contains settings of the main window and widgets"""
 
-        super(MainWindow, self).__init__()
-
         # window size
-        self.setMinimumSize(QSize(620, 620))
-        self.setMaximumSize(QSize(620, 620))
+        Window.setMinimumSize(QSize(620, 620))
+        Window.setMaximumSize(QSize(620, 620))
 
         # external content container
         self.container = QFrame()
@@ -45,7 +43,12 @@ class MainWindow(QMainWindow):
         self.alarm_clock_area.setGeometry(QRect(0, 0, 620, 460))
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
 
-# ------------------------------so far, I will create my own alarm clocks for placement-------------------------
+
+class Alarm(Ui_MainWindow):
+    def __init__(self):
+        Ui_MainWindow.__init__(self, self)
+
+        # ------------------------------so far, I will create my own alarm clocks for placement-------------------------
         self.alarm = QFrame(self.alarm_clock_area)
         self.alarm.setMinimumSize(590, 100)
         self.alarm.setMaximumSize(590, 100)
@@ -65,7 +68,7 @@ class MainWindow(QMainWindow):
         self.alarm_3.setMinimumSize(260, 100)
         self.alarm_3.setMaximumSize(260, 100)
         self.alarm_3.setProperty("class", "alarm_3")
-# ----------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------
 
         # the area with the alarm time and the icon, for left alignment
         self.space_for_time = QFrame(self.alarm)
@@ -113,7 +116,14 @@ class MainWindow(QMainWindow):
         self.alarm_scroll_area.setProperty("class", "alarm_scroll_area")
         self.alarm_scroll_area.setWidget(self.alarm_clock_area)
 
-        self.setCentralWidget(self.container)
+
+class MainWindow(QMainWindow, Alarm):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+
+        Alarm.__init__(self)
+
+        self.setCentralWidget(Ui_MainWindow.container)
 
 
 if __name__ == '__main__':
