@@ -11,12 +11,8 @@ from PyQt6.QtWidgets import (
 class Ui_MainWindow:
     """The class describes the main application window"""
 
-    def __init__(self, Window):
+    def __init__(self):
         """Contains settings of the main window and widgets"""
-
-        # window size
-        Window.setMinimumSize(QSize(620, 620))
-        Window.setMaximumSize(QSize(620, 620))
 
         # external content container
         self.container = QFrame()
@@ -25,6 +21,7 @@ class Ui_MainWindow:
         self.circle_bg.setGeometry(QRect(0, 0, 620, 620))
         self.circle_bg.setProperty("class", "circle_bg")
 
+        # application header, with time and additional information
         self.header = QFrame(self.circle_bg)
         self.header.setGeometry(QRect(0, 0, 620, 230))
         self.header.setProperty("class", "header")
@@ -39,14 +36,22 @@ class Ui_MainWindow:
         self.time_label.setFont(self.font_time)
         self.time_label.setProperty("class", "time_label")
 
-        self.alarm_clock_area = QFrame(self.circle_bg)
+        # a widget that combines all alarm clocks for the competent implementation of scrolling
+        self.alarm_clock_area = QFrame()
         self.alarm_clock_area.setGeometry(QRect(0, 0, 620, 460))
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
+
+        self.alarm_scroll_area = QScrollArea(self.circle_bg)
+        self.alarm_scroll_area.setGeometry(QRect(0, 230, 620, 350))
+        self.alarm_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.alarm_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.alarm_scroll_area.setProperty("class", "alarm_scroll_area")
+        self.alarm_scroll_area.setWidget(self.alarm_clock_area)
 
 
 class Alarm(Ui_MainWindow):
     def __init__(self):
-        Ui_MainWindow.__init__(self, self)
+        Ui_MainWindow.__init__(self)
 
         # ------------------------------so far, I will create my own alarm clocks for placement-------------------------
         self.alarm = QFrame(self.alarm_clock_area)
@@ -97,9 +102,10 @@ class Alarm(Ui_MainWindow):
         self.horizontal_layout = QHBoxLayout(self.alarm)
         self.horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.horizontal_layout.setSpacing(15)
-        self.horizontal_layout.addWidget(self.space_for_time, alignment=Qt.AlignmentFlag.AlignRight)
+        self.horizontal_layout.addWidget(self.space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
         self.horizontal_layout.addWidget(self.alarm_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
 
+        # Выравнивание всех будильников
         self.vertical_layout = QVBoxLayout(self.alarm_clock_area)
         self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.vertical_layout.setSpacing(15)
@@ -109,21 +115,19 @@ class Alarm(Ui_MainWindow):
         self.vertical_layout.addWidget(self.alarm_2, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.alarm_3, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        self.alarm_scroll_area = QScrollArea(self.circle_bg)
-        self.alarm_scroll_area.setGeometry(QRect(0, 230, 620, 350))
-        self.alarm_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.alarm_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.alarm_scroll_area.setProperty("class", "alarm_scroll_area")
-        self.alarm_scroll_area.setWidget(self.alarm_clock_area)
-
 
 class MainWindow(QMainWindow, Alarm):
     def __init__(self):
         super(MainWindow, self).__init__()
 
+        # setting window size
+        self.setFixedSize(QSize(620, 620))
+
+        # наследуем все классы / подтягиваем всё содержимое окна
         Alarm.__init__(self)
 
-        self.setCentralWidget(Ui_MainWindow.container)
+        # устанавливаем в центральный виджет фрейм со всем содержимым
+        self.setCentralWidget(self.container)
 
 
 if __name__ == '__main__':
