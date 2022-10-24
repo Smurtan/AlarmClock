@@ -4,7 +4,8 @@ from PyQt6.QtCore import QSize, QTimer, QRect, Qt
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
-    QVBoxLayout, QScrollArea, QHBoxLayout, QCheckBox
+    QVBoxLayout, QScrollArea, QHBoxLayout, QCheckBox,
+    QGroupBox
 )
 
 
@@ -76,7 +77,8 @@ class Alarm(Ui_MainWindow):
         # ----------------------------------------------------------------------------------------------------------------
 
         # the area with the alarm time and the icon, for left alignment
-        self.space_for_time = QFrame(self.alarm)
+        self.space_for_time = QGroupBox(self.alarm)
+        self.space_for_time.setFixedSize(170, 80)
         self.space_for_time.setProperty("class", "space_for_time")
 
         self.font_alarm_time_enable = QFont()
@@ -91,7 +93,6 @@ class Alarm(Ui_MainWindow):
         self.icon_sun = QPixmap('image/icon_sun.png')
         self.icon_moon = QPixmap('image/icon_moon.png')
         self.alarm_icon = QLabel(self.space_for_time)
-        self.alarm_icon.setMargin(10)
         self.alarm_icon.setPixmap(self.icon_moon)
 
         self.alarm_time = QLabel("00:00", self.space_for_time)
@@ -99,9 +100,15 @@ class Alarm(Ui_MainWindow):
 
         self.alarm_checkbox = QCheckBox(self.alarm)
 
+        # для выравнивания картинки и времени внутри будильника
+        self.alarm_horizontal_layout = QHBoxLayout(self.space_for_time)
+        self.alarm_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.alarm_horizontal_layout.addWidget(self.alarm_icon)
+        self.alarm_horizontal_layout.addWidget(self.alarm_time)
+
+        # Выравнивание элементов внутри будильника
         self.horizontal_layout = QHBoxLayout(self.alarm)
         self.horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.horizontal_layout.setSpacing(15)
         self.horizontal_layout.addWidget(self.space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
         self.horizontal_layout.addWidget(self.alarm_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
 
@@ -115,6 +122,12 @@ class Alarm(Ui_MainWindow):
         self.vertical_layout.addWidget(self.alarm_2, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.alarm_3, alignment=Qt.AlignmentFlag.AlignHCenter)
 
+        # добавляем событие на прокрутку
+        self.alarm_scroll_area.scroll.connect(self.alarms_was_scrolling)
+
+    def alarms_was_scrolling(self, value):
+        print(value)
+
 
 class MainWindow(QMainWindow, Alarm):
     def __init__(self):
@@ -122,9 +135,6 @@ class MainWindow(QMainWindow, Alarm):
 
         # setting window size
         self.setFixedSize(QSize(620, 620))
-
-        # наследуем все классы / подтягиваем всё содержимое окна
-        Alarm.__init__(self)
 
         # устанавливаем в центральный виджет фрейм со всем содержимым
         self.setCentralWidget(self.container)
