@@ -5,7 +5,7 @@ from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
     QVBoxLayout, QScrollArea, QHBoxLayout, QCheckBox,
-    QGroupBox
+    QGroupBox, QSizePolicy
 )
 
 
@@ -57,24 +57,32 @@ class Alarm(Ui_MainWindow):
         # ------------------------------so far, I will create my own alarm clocks for placement-------------------------
         self.alarm = QFrame(self.alarm_clock_area)
         self.alarm.setMinimumSize(590, 100)
-        self.alarm.setMaximumSize(590, 100)
         self.alarm.setProperty("class", "alarm")
 
         self.alarm_1 = QFrame(self.alarm_clock_area)
-        self.alarm_1.setMinimumSize(530, 100)
-        self.alarm_1.setMaximumSize(530, 100)
+        self.alarm_1.setMinimumSize(540, 100)
         self.alarm_1.setProperty("class", "alarm_1")
 
         self.alarm_2 = QFrame(self.alarm_clock_area)
-        self.alarm_2.setMinimumSize(370, 100)
-        self.alarm_2.setMaximumSize(370, 100)
+        self.alarm_2.setMinimumSize(330, 100)
         self.alarm_2.setProperty("class", "alarm_2")
 
         self.alarm_3 = QFrame(self.alarm_clock_area)
         self.alarm_3.setMinimumSize(260, 100)
-        self.alarm_3.setMaximumSize(260, 100)
         self.alarm_3.setProperty("class", "alarm_3")
+
+        self.alarm_4 = QFrame(self.alarm_clock_area)
+        self.alarm_4.setMinimumSize(260, 100)
+        self.alarm_4.setProperty("class", "alarm_3")
+
+        self.alarm_5 = QFrame(self.alarm_clock_area)
+        self.alarm_5.setMinimumSize(260, 100)
+        self.alarm_5.setProperty("class", "alarm_3")
         # ----------------------------------------------------------------------------------------------------------------
+
+        self.list_alarm = [self.alarm, self.alarm_1, self.alarm_2, self.alarm_3, self.alarm_4, self.alarm_5]
+        self.visible_alarm = self.list_alarm[:3] if len(self.list_alarm) >= 3 else self.list_alarm[
+                                                                                   :len(self.list_alarm)]
 
         # the area with the alarm time and the icon, for left alignment
         self.space_for_time = QGroupBox(self.alarm)
@@ -100,19 +108,19 @@ class Alarm(Ui_MainWindow):
 
         self.alarm_checkbox = QCheckBox(self.alarm)
 
-        # для выравнивания картинки и времени внутри будильника
+        # to align the picture and time inside the alarm clock
         self.alarm_horizontal_layout = QHBoxLayout(self.space_for_time)
         self.alarm_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.alarm_horizontal_layout.addWidget(self.alarm_icon)
         self.alarm_horizontal_layout.addWidget(self.alarm_time)
 
-        # Выравнивание элементов внутри будильника
+        # Alignment of elements inside the alarm clock
         self.horizontal_layout = QHBoxLayout(self.alarm)
         self.horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.horizontal_layout.addWidget(self.space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
         self.horizontal_layout.addWidget(self.alarm_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
 
-        # Выравнивание всех будильников
+        # Alignment of all alarms
         self.vertical_layout = QVBoxLayout(self.alarm_clock_area)
         self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.vertical_layout.setSpacing(15)
@@ -121,12 +129,41 @@ class Alarm(Ui_MainWindow):
         self.vertical_layout.addWidget(self.alarm_1, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.alarm_2, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.alarm_3, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.alarm_4, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.alarm_5, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        # добавляем событие на прокрутку
-        self.alarm_scroll_area.scroll.connect(self.alarms_was_scrolling)
+        self.alarm_clock_area.setGeometry(QRect(0, 0, 620, len(self.list_alarm) * 115))
+
+        # adding an event to the scroll
+        self.scroll_value = 0
+        self.alarm_scroll_area.verticalScrollBar().valueChanged.connect(self.alarms_was_scrolling)
 
     def alarms_was_scrolling(self, value):
-        print(value)
+        # we add an error of 50px to the current scrollbar movement so that the last alarm clock
+        # I also added in size, since the scrollbar value is not enough for this
+        count_scroll = (value + 50) // 60  # find out the number of scrolls made
+        first_alarm = (value + 50) // 120  # find out the number of the first visible alarm clock
+        print(value, count_scroll, first_alarm)
+        count_alarm = len(self.list_alarm)
+
+        # so that the list with visible alarms changes only when exactly 3 alarms are visible
+        # +1 was added to first_alarm, because when 4 alarm clocks are not fully visible, it is necessary,
+        # so that the size has already changed, and not waiting for their full appearance
+        if count_scroll % 2 != 0:
+            if count_alarm >= first_alarm + 4:
+                self.visible_alarm = self.list_alarm[first_alarm + 1:first_alarm + 4]
+            else:
+                self.visible_alarm = self.list_alarm[count_alarm - 2:]
+
+        self.visible_alarm[0].setMinimumSize(590, 100)
+        # if 4 alarm clocks are visible on the screen, then the third of them should be smaller
+        if count_scroll % 2 == 0:  # only the whole 3 alarm clocks are visible
+            self.visible_alarm[1].setMinimumSize(540, 100)
+            self.visible_alarm[2].setMinimumSize(330, 100)
+        else:  # 4 alarms are visible, because the scrollbar is not a multiple of 100
+            self.visible_alarm[1].setMinimumSize(490, 100)
+            self.visible_alarm[2].setMinimumSize(260, 100)
+
 
 
 class MainWindow(QMainWindow, Alarm):
@@ -136,7 +173,7 @@ class MainWindow(QMainWindow, Alarm):
         # setting window size
         self.setFixedSize(QSize(620, 620))
 
-        # устанавливаем в центральный виджет фрейм со всем содержимым
+        # we install a frame with all the contents in the central widget
         self.setCentralWidget(self.container)
 
 
