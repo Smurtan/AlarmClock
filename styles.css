@@ -16,25 +16,37 @@
     border: none;
 }
 
-.alarm_scroll_area {
+.alarm_clock_scroll_area {
     border: none;
     background-color: rgba(0, 0, 0, 0);
 }
+
+.space_for_time {
+    border: none;
+}
 /* -----------I divided the colors for a while --------------------------*/
-.alarm {
+.alarm_clock {
     background: #fff5ff;
     border-radius: 50%;
 }
-.alarm_1 {
+.alarm_clock_1 {
     background: #b029b0;
     border-radius: 50%;
 }
-.alarm_2 {
+.alarm_clock_2 {
     background: #29b078;
     border-radius: 50%;
 }
-.alarm_3 {
+.alarm_clock_3 {
     background: #b02929;
+    border-radius: 50%;
+}
+.alarm_clock_4 {
+    background: #0000ff;
+    border-radius: 50%;
+}
+.alarm_clock_5 {
+    background: #fff5ff;
     border-radius: 50%;
 }
 /*----------------------------------------------------------------------*/
