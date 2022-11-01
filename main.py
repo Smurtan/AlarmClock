@@ -57,41 +57,12 @@ class AlarmClock(Ui_MainWindow):
         self.width_alarm_clock = 100
         self.spacing_alarm_clock = 20
 
-        # ------------------------------so far, I will create my own alarm clocks for placement-------------------------
-        self.alarm_clock = QFrame(self.alarm_clock_area)
-        self.alarm_clock.setMinimumSize(590, 100)
-        self.alarm_clock.setProperty("class", "alarm_clock")
+        self.list_alarm_clock = []
 
-        self.alarm_clock_1 = QFrame(self.alarm_clock_area)
-        self.alarm_clock_1.setMinimumSize(540, 100)
-        self.alarm_clock_1.setProperty("class", "alarm_clock_1")
-
-        self.alarm_clock_2 = QFrame(self.alarm_clock_area)
-        self.alarm_clock_2.setMinimumSize(330, 100)
-        self.alarm_clock_2.setProperty("class", "alarm_clock_2")
-
-        self.alarm_clock_3 = QFrame(self.alarm_clock_area)
-        self.alarm_clock_3.setMinimumSize(260, 100)
-        self.alarm_clock_3.setProperty("class", "alarm_clock_3")
-
-        self.alarm_clock_4 = QFrame(self.alarm_clock_area)
-        self.alarm_clock_4.setMinimumSize(260, 100)
-        self.alarm_clock_4.setProperty("class", "alarm_clock_4")
-
-        self.alarm_clock_5 = QFrame(self.alarm_clock_area)
-        self.alarm_clock_5.setMinimumSize(260, 100)
-        self.alarm_clock_5.setProperty("class", "alarm_clock_5")
-        # ----------------------------------------------------------------------------------------------------------------
-
-        self.list_alarm_clock = [self.alarm_clock, self.alarm_clock_1, self.alarm_clock_2, self.alarm_clock_3,
-                                 self.alarm_clock_4, self.alarm_clock_5]
-        self.visible_alarm_clock = self.list_alarm_clock[:3] if len(self.list_alarm_clock) >= 3 else \
-            self.list_alarm_clock[:len(self.list_alarm_clock)]
-
-        # the area with the alarm time and the icon, for left alignment
-        self.space_for_time = QGroupBox(self.alarm_clock)
-        self.space_for_time.setFixedSize(170, 80)
-        self.space_for_time.setProperty("class", "space_for_time")
+        if len(self.list_alarm_clock) >= 3:
+            self.visible_alarm_clock = self.list_alarm_clock[:3]
+        else:
+            self.visible_alarm_clock = self.list_alarm_clock[:len(self.list_alarm_clock)]
 
         self.font_alarm_clock_time_enable = QFont()
         self.font_alarm_clock_time_enable.setFamily("Segoe UI")
@@ -104,52 +75,64 @@ class AlarmClock(Ui_MainWindow):
 
         self.icon_sun = QPixmap('image/icon_sun.png')
         self.icon_moon = QPixmap('image/icon_moon.png')
-        self.alarm_clock_icon = QLabel(self.space_for_time)
-        self.alarm_clock_icon.setPixmap(self.icon_moon)
-
-        self.alarm_clock_time = QLabel("00:00", self.space_for_time)
-        self.alarm_clock_time.setFont(self.font_alarm_clock_time_enable)
-
-        self.alarm_clock_checkbox = QCheckBox(self.alarm_clock)
-
-        # to align the picture and time inside the alarm clock
-        self.alarm_clock_horizontal_layout = QHBoxLayout(self.space_for_time)
-        self.alarm_clock_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.alarm_clock_horizontal_layout.addWidget(self.alarm_clock_icon)
-        self.alarm_clock_horizontal_layout.addWidget(self.alarm_clock_time)
-
-        # Alignment of elements inside the alarm clock
-        self.horizontal_layout = QHBoxLayout(self.alarm_clock)
-        self.horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.horizontal_layout.addWidget(self.space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
-        self.horizontal_layout.addWidget(self.alarm_clock_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
 
         # Alignment of all alarm clocks
         self.vertical_layout = QVBoxLayout(self.alarm_clock_area)
         self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.vertical_layout.setSpacing(self.spacing_alarm_clock)
-        # It was decided to align each added widget individually, because they have different sizes
-        self.vertical_layout.addWidget(self.alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.vertical_layout.addWidget(self.alarm_clock_1, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.vertical_layout.addWidget(self.alarm_clock_2, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.vertical_layout.addWidget(self.alarm_clock_3, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.vertical_layout.addWidget(self.alarm_clock_4, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.vertical_layout.addWidget(self.alarm_clock_5, alignment=Qt.AlignmentFlag.AlignHCenter)
-
-        # we change the size of the alarm clock area so that everyone fits in
-        self.alarm_clock_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clock) - 1) * (
-                self.width_alarm_clock + self.spacing_alarm_clock) + self.width_alarm_clock))
 
         # adding an event to the scroll
         self.scroll_value = 0
         self.last_scroll = 0  # will be used to determine the scrolling direction
         self.alarm_clock_scroll_area.verticalScrollBar().valueChanged.connect(self.alarm_clocks_was_scrolling)
 
+    def AddingNewAlarmClock(self, time):
+        alarm_clock = QFrame(self.alarm_clock_area)
+        alarm_clock.setMinimumSize(260, 100)
+        alarm_clock.setProperty("class", "alarm_clock")
+
+        # the area with the alarm time and the icon, for left alignment
+        space_for_time = QGroupBox(alarm_clock)
+        space_for_time.setFixedSize(170, 80)
+        space_for_time.setProperty("class", "space_for_time")
+
+        alarm_clock_icon = QLabel(space_for_time)
+        alarm_clock_icon.setPixmap(self.icon_moon)
+
+        alarm_clock_time = QLabel(time, space_for_time)
+        alarm_clock_time.setFont(self.font_alarm_clock_time_enable)
+
+        alarm_clock_checkbox = QCheckBox(alarm_clock)
+
+        # to align the picture and time inside the space for time
+        space_for_time_horizontal_layout = QHBoxLayout(space_for_time)
+        space_for_time_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        space_for_time_horizontal_layout.addWidget(alarm_clock_icon)
+        space_for_time_horizontal_layout.addWidget(alarm_clock_time)
+
+        # Alignment of elements inside the alarm clock
+        alarm_clock_horizontal_layout = QHBoxLayout(alarm_clock)
+        alarm_clock_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        alarm_clock_horizontal_layout.addWidget(space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
+        alarm_clock_horizontal_layout.addWidget(alarm_clock_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
+
+        # It was decided to align each added widget individually, because they have different sizes
+        self.vertical_layout.addWidget(alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+        self.list_alarm_clock.append(alarm_clock)
+
+        # We will update the alarm clock sizes each time, using the scroll function to match the changes.
+        self.alarm_clocks_was_scrolling(0)
+
+        # we change the size of the alarm clock area so that everyone fits in
+        self.alarm_clock_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clock) - 1) * (
+                self.width_alarm_clock + self.spacing_alarm_clock) + self.width_alarm_clock))
+
     def alarm_clocks_was_scrolling(self, value):
+        print(value)
         # We add an error of 50 pixels to the current scrollbar movement so that the last alarm changes size
-        count_scroll = (value + 50) // 60  # find out the number of scrolls made
-        first_alarm_clock = (value + 50) // 120  # find out the number of the first visible alarm clock
-        print(value, count_scroll, first_alarm_clock)
+        count_scroll = value // 60  # find out the number of scrolls made
+        first_alarm_clock = value // 120  # find out the number of the first visible alarm clock
         count_alarm_clock = len(self.list_alarm_clock)
 
         # determining the direction of scrolling
@@ -172,14 +155,18 @@ class AlarmClock(Ui_MainWindow):
             else:
                 self.visible_alarm_clock = self.list_alarm_clock[count_alarm_clock - 2:]
 
-        self.visible_alarm_clock[0].setMinimumSize(590, 100)
-        # if 4 alarm clocks are visible on the screen, then the third of them should be smaller
-        if (count_scroll + scroll_direction) % 2 == 0:  # only the whole 3 alarm clocks are visible
-            self.visible_alarm_clock[1].setMinimumSize(540, 100)
-            self.visible_alarm_clock[2].setMinimumSize(330, 100)
-        else:  # 4 alarm clocks are visible, because the scrollbar is not a multiple of 100
-            self.visible_alarm_clock[1].setMinimumSize(490, 100)
-            self.visible_alarm_clock[2].setMinimumSize(260, 100)
+        # We will exclude the interruption if there is a small number of alarms
+        try:
+            self.visible_alarm_clock[0].setMinimumSize(590, 100)
+            # if 4 alarm clocks are visible on the screen, then the third of them should be smaller
+            if (count_scroll + scroll_direction) % 2 == 0:  # only the whole 3 alarm clocks are visible
+                self.visible_alarm_clock[1].setMinimumSize(540, 100)
+                self.visible_alarm_clock[2].setMinimumSize(330, 100)
+            else:  # 4 alarm clocks are visible, because the scrollbar is not a multiple of 100
+                self.visible_alarm_clock[1].setMinimumSize(490, 100)
+                self.visible_alarm_clock[2].setMinimumSize(260, 100)
+        except IndexError:
+            pass
 
 
 class MainWindow(QMainWindow, AlarmClock):
@@ -188,6 +175,11 @@ class MainWindow(QMainWindow, AlarmClock):
 
         # setting window size
         self.setFixedSize(QSize(620, 620))
+
+        AlarmClock.AddingNewAlarmClock(self, "00:00")
+        AlarmClock.AddingNewAlarmClock(self, "21:00")
+        AlarmClock.AddingNewAlarmClock(self, "18:00")
+
 
         # we install a frame with all the contents in the central widget
         self.setCentralWidget(self.container)
