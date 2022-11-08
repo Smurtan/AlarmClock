@@ -129,8 +129,6 @@ class AlarmClock(Ui_MainWindow):
                 self.width_alarm_clock + self.spacing_alarm_clock) + self.width_alarm_clock))
 
     def alarm_clocks_was_scrolling(self, value):
-        print(value)
-        # We add an error of 50 pixels to the current scrollbar movement so that the last alarm changes size
         count_scroll = value // 60  # find out the number of scrolls made
         first_alarm_clock = value // 120  # find out the number of the first visible alarm clock
         count_alarm_clock = len(self.list_alarm_clock)
@@ -153,7 +151,7 @@ class AlarmClock(Ui_MainWindow):
                 self.visible_alarm_clock = self.list_alarm_clock[first_alarm_clock + scroll_direction:
                                                                  first_alarm_clock + scroll_direction + 3]
             else:
-                self.visible_alarm_clock = self.list_alarm_clock[count_alarm_clock - 2:]
+                self.visible_alarm_clock = self.list_alarm_clock[count_alarm_clock - 3:]
 
         # We will exclude the interruption if there is a small number of alarms
         try:
@@ -176,10 +174,10 @@ class MainWindow(QMainWindow, AlarmClock):
         # setting window size
         self.setFixedSize(QSize(620, 620))
 
-        AlarmClock.AddingNewAlarmClock(self, "00:00")
+        AlarmClock.AddingNewAlarmClock(self, "7:00")
         AlarmClock.AddingNewAlarmClock(self, "21:00")
         AlarmClock.AddingNewAlarmClock(self, "18:00")
-
+        AlarmClock.AddingNewAlarmClock(self, "17:00")
 
         # we install a frame with all the contents in the central widget
         self.setCentralWidget(self.container)
