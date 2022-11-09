@@ -5,8 +5,10 @@ from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
     QVBoxLayout, QScrollArea, QHBoxLayout, QCheckBox,
-    QGroupBox, QSizePolicy
+    QGroupBox, QSizePolicy, QPushButton
 )
+
+from py_toggle import PyToggle
 
 
 class Ui_MainWindow:
@@ -102,7 +104,9 @@ class AlarmClock(Ui_MainWindow):
         alarm_clock_time = QLabel(time, space_for_time)
         alarm_clock_time.setFont(self.font_alarm_clock_time_enable)
 
-        alarm_clock_checkbox = QCheckBox(alarm_clock)
+        # animated toggle button===========================================================================
+        alarm_clock_toggle = PyToggle()
+        # ==================================================================================================
 
         # to align the picture and time inside the space for time
         space_for_time_horizontal_layout = QHBoxLayout(space_for_time)
@@ -114,7 +118,7 @@ class AlarmClock(Ui_MainWindow):
         alarm_clock_horizontal_layout = QHBoxLayout(alarm_clock)
         alarm_clock_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         alarm_clock_horizontal_layout.addWidget(space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
-        alarm_clock_horizontal_layout.addWidget(alarm_clock_checkbox, alignment=Qt.AlignmentFlag.AlignRight)
+        alarm_clock_horizontal_layout.addWidget(alarm_clock_toggle, alignment=Qt.AlignmentFlag.AlignRight)
 
         # It was decided to align each added widget individually, because they have different sizes
         self.vertical_layout.addWidget(alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
