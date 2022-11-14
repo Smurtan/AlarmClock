@@ -1,8 +1,7 @@
 from PyQt6.QtCore import (Qt, QRect, QPoint, QEasingCurve,
-                          QPropertyAnimation)
+                          QPropertyAnimation, pyqtProperty)
 from PyQt6.QtGui import QPainter, QColor
-from PyQt6.QtWidgets import QCheckBox
-from astroid.objects import Property
+from PyQt6.QtWidgets import QCheckBox, QApplication
 
 
 class PyToggle(QCheckBox):
@@ -10,9 +9,9 @@ class PyToggle(QCheckBox):
             self,
             width=60,
             bg_color="#777",
-            circle_color="#DDD",
+            circle_color="#fefe22",
             active_color="#00BCff",
-            animation_curve=QEasingCurve.Type.OutBounce
+            animation_curve=QEasingCurve.Type.OutQuint
     ):
         QCheckBox.__init__(self)
 
@@ -35,7 +34,7 @@ class PyToggle(QCheckBox):
         self.stateChanged.connect(self.start_transition)
 
     # CREAT NEW SET AND GET PROPERTY
-    @Property(float)  # Get
+    @pyqtProperty(int)  # Get
     def circle_position(self):
         return self._circle_position
 
@@ -54,8 +53,6 @@ class PyToggle(QCheckBox):
         # START ANIMATION
         self.animation.start()
 
-        print(f'Status: {self.isChecked()}')
-
     # SET NEW HIT AREA
     def hitButton(self, pos: QPoint):
         return self.contentsRect().contains(pos)
@@ -72,23 +69,38 @@ class PyToggle(QCheckBox):
         # DRAW RECTANGLE
         rect = QRect(0, 0, self.width(), self.height())
 
+        # DRAW SMILE
+        # 😴🙂
+
         # CHECK IF IS CHECKED
         if not self.isChecked():
             # DRAW BG
             p.setBrush(QColor(self._bg_color))
             p.drawRoundedRect(0, 0, rect.width(), self.height(), self.height() / 2, self.height() / 2)
 
-            # DRAW CIRCLE
+            # DRAW SMILE
             p.setBrush(QColor(self._circle_color))
             p.drawEllipse(self._circle_position, 3, 22, 22)
+
+            p.setBrush(QColor("#000"))
+            p.drawEllipse(7, 9, 4, 4)
+            p.drawEllipse(16, 9, 4, 4)
+
+            p.drawArc(QRect(QPoint(5, 5), QPoint(17, 15)))
         else:
             # DRAW BG
             p.setBrush(QColor(self._activate_color))
             p.drawRoundedRect(0, 0, rect.width(), self.height(), self.height() / 2, self.height() / 2)
 
-            # DRAW CIRCLE
+            # DRAW SMILE
             p.setBrush(QColor(self._circle_color))
             p.drawEllipse(self._circle_position, 3, 22, 22)
+
+            p.setBrush(QColor("#000"))
+            p.drawEllipse(7, 9, 4, 4)
+            p.drawEllipse(16, 9, 4, 4)
+
+            p.drawArc(7, 15, 20, 40, 190, 5700)
 
         # END DRAW
         p.end()
