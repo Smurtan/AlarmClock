@@ -1,7 +1,7 @@
 from PyQt6.QtCore import (Qt, QRect, QPoint, QEasingCurve,
                           QPropertyAnimation, pyqtProperty)
 from PyQt6.QtGui import QPainter, QColor
-from PyQt6.QtWidgets import QCheckBox, QApplication
+from PyQt6.QtWidgets import QCheckBox
 
 
 class PyToggle(QCheckBox):
@@ -25,7 +25,7 @@ class PyToggle(QCheckBox):
         self._activate_color = active_color
 
         # CREAT ANIMATION
-        self._circle_position = 3
+        self._emoji_position = 0
         self.animation = QPropertyAnimation(self, b"circle_position", self)
         self.animation.setEasingCurve(animation_curve)
         self.animation.setDuration(500)  # Time in milliseconds
@@ -36,19 +36,19 @@ class PyToggle(QCheckBox):
     # CREAT NEW SET AND GET PROPERTY
     @pyqtProperty(int)  # Get
     def circle_position(self):
-        return self._circle_position
+        return self._emoji_position
 
     @circle_position.setter
     def circle_position(self, pos):
-        self._circle_position = pos
+        self._emoji_position = pos
         self.update()
 
     def start_transition(self, value):
         self.animation.stop()  # Stop animation if running
         if value:
-            self.animation.setEndValue(self.width() - 26)
+            self.animation.setEndValue(self.width() - 28)
         else:
-            self.animation.setEndValue(3)
+            self.animation.setEndValue(0)
 
         # START ANIMATION
         self.animation.start()
@@ -66,11 +66,13 @@ class PyToggle(QCheckBox):
         # SET AS ON PEN
         p.setPen(Qt.PenStyle.NoPen)
 
+        # CHANGING THE FONT FOR EMOTICONS
+        font = p.font()
+        font.setPixelSize(20)
+        p.setFont(font)
+
         # DRAW RECTANGLE
         rect = QRect(0, 0, self.width(), self.height())
-
-        # DRAW SMILE
-        # 😴🙂
 
         # CHECK IF IS CHECKED
         if not self.isChecked():
@@ -78,29 +80,17 @@ class PyToggle(QCheckBox):
             p.setBrush(QColor(self._bg_color))
             p.drawRoundedRect(0, 0, rect.width(), self.height(), self.height() / 2, self.height() / 2)
 
-            # DRAW SMILE
-            p.setBrush(QColor(self._circle_color))
-            p.drawEllipse(self._circle_position, 3, 22, 22)
-
-            p.setBrush(QColor("#000"))
-            p.drawEllipse(7, 9, 4, 4)
-            p.drawEllipse(16, 9, 4, 4)
-
-            p.drawArc(QRect(QPoint(5, 5), QPoint(17, 15)))
+            # DRAW EMOTICON
+            p.setPen(Qt.PenStyle.DashLine)
+            p.drawText(QPoint(self._emoji_position, 21), "\U0001F634")  # emoticons in unicode
         else:
             # DRAW BG
             p.setBrush(QColor(self._activate_color))
             p.drawRoundedRect(0, 0, rect.width(), self.height(), self.height() / 2, self.height() / 2)
 
-            # DRAW SMILE
-            p.setBrush(QColor(self._circle_color))
-            p.drawEllipse(self._circle_position, 3, 22, 22)
-
-            p.setBrush(QColor("#000"))
-            p.drawEllipse(7, 9, 4, 4)
-            p.drawEllipse(16, 9, 4, 4)
-
-            p.drawArc(7, 15, 20, 40, 190, 5700)
+            # DRAW EMOTICON
+            p.setPen(Qt.PenStyle.DashLine)
+            p.drawText(QPoint(self._emoji_position, 21), "\U0001F60A")  # emoticons in unicode
 
         # END DRAW
         p.end()
