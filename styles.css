@@ -1,32 +1,3 @@
-.circle_bg {
-    background-color: #282a36;
-    border-radius: 310px;
-}
+@import url("body/body_style.css");
 
-.header {
-    background: none;
-}
-
-.time_label {
-    color: #f8f8f2;
-}
-
-.alarm_clock_area {
-    background: none;
-    border: none;
-}
-
-.alarm_clock_scroll_area {
-    border: none;
-    background-color: rgba(0, 0, 0, 0);
-}
-
-.space_for_time {
-    border: none;
-}
-/* -----------I divided the colors for a while --------------------------*/
-.alarm_clock {
-    background: #fff5ff;
-    border-radius: 50%;
-}
-/*----------------------------------------------------------------------*/
+@import url("header/header_style.css");

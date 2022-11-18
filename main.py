@@ -1,15 +1,14 @@
 import sys
 
-from PyQt6.QtCore import QSize, QTimer, QPropertyAnimation, QRect, Qt
-from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtCore import QSize, QRect, Qt
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
-    QVBoxLayout, QScrollArea, QHBoxLayout, QCheckBox,
-    QGroupBox, QSizePolicy, QPushButton
+    QVBoxLayout, QScrollArea
 )
 
-from py_toggle import PyToggle
-from py_alarm_clock import PyAlarmClock
+from header import Ui_Header
+from body import Ui_Body
 
 
 class Ui_MainWindow:
