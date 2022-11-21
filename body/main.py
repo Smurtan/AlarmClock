@@ -1,11 +1,11 @@
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 
-from py_widjet_alarm_clock import PyAlarmClock
+from .py_widjet_alarm_clock import PyAlarmClock
 
 
 class Ui_Body:
-    def __init__(self):
+    def __init__(self, parent):
         # SET DEFAULT PARAMETERS
         self.height_alarm_clock = 100
         self.spacing_alarm_clock = 20
@@ -16,7 +16,7 @@ class Ui_Body:
         self.alarm_clock_area.setProperty("class", "alarm_clock_area")
 
         # CREAT SCROLLING WIDGET
-        self.alarm_clock_scroll_area = QScrollArea()
+        self.alarm_clock_scroll_area = QScrollArea(parent)
         self.alarm_clock_scroll_area.setGeometry(QRect(0, 230, 620, 340))
         self.alarm_clock_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.alarm_clock_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -29,7 +29,7 @@ class Ui_Body:
         self.vertical_layout.setSpacing(self.spacing_alarm_clock)
 
         # ALARM CLOCK STORAGE LIST
-        self.list_alarm_clock = [PyAlarmClock(), PyAlarmClock(), PyAlarmClock()]
+        self.list_alarm_clock = []
 
         # SETTING PARAMETERS FOR THE IMPLEMENTATION OF CHANGING THE SIZE OF ALARMS
         self.scroll_value = 0

@@ -4,13 +4,9 @@ from PyQt6.QtWidgets import *
 
 
 class Ui_Header:
-    def __init__(self):
-        self.circle_bg = QFrame()
-        self.circle_bg.setGeometry(QRect(0, 0, 620, 620))
-        self.circle_bg.setProperty("class", "circle_bg")
-
+    def __init__(self, parent):
         # application header, with time and additional information
-        self.header = QFrame(self.circle_bg)
+        self.header = QFrame(parent)
         self.header.setGeometry(QRect(0, 0, 620, 230))
         self.header.setProperty("class", "header")
 
