@@ -1,7 +1,7 @@
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 
-from .py_widjet_alarm_clock import PyAlarmClock
+from .py_widget_alarm_clock import PyAlarmClock
 
 
 class Ui_Body:
@@ -31,14 +31,21 @@ class Ui_Body:
         # ALARM CLOCK STORAGE LIST
         self.list_alarm_clock = []
 
+        # INITIALIZATION OF CREATED ALARMS
+        self.list_alarm_clock = self.list_alarm_clock
+        try:  # handle a small number of alarms
+            self.visible_alarm_clock = self.list_alarm_clock[:3]
+        except IndexError:
+            self.visible_alarm_clock = self.list_alarm_clock[:len(self.list_alarm_clock)]
+
         # SETTING PARAMETERS FOR THE IMPLEMENTATION OF CHANGING THE SIZE OF ALARMS
         self.scroll_value = 0
         self.last_scroll = 0  # will be used to determine the scrolling direction
         self.alarm_clock_scroll_area.verticalScrollBar().valueChanged.connect(self.changingWidthAlarmClock)
 
-    def addNewAlarmClock(self):
+    def addNewAlarmClock(self, alarm_clock_area):
         # CREAT NEW ALARM CLOCK
-        new_alarm_clock = PyAlarmClock()
+        new_alarm_clock = PyAlarmClock(alarm_clock_area)
 
         # ADDING AND EQUALIZING AN ALARM CLOCK
         # each alarm clock is aligned separately, as it has its own size

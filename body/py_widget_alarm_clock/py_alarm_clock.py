@@ -8,15 +8,14 @@ from .py_toggle import PyToggle
 class PyAlarmClock(QWidget):
     def __init__(
             self,
+            alarm_clock_area,
+            time="00:00",
             family_fonts="Segoe UI",
             point_size=26,
             icon_day="icon_sun.png",
             icon_night="icon_moon.png",
             min_height_alarm_clock=100,
             min_width_alarm_clock=290,
-            list_alarm_clock=list,
-            parent=None,
-            time="00:00"
     ):
         QWidget.__init__(self)
 
@@ -34,15 +33,8 @@ class PyAlarmClock(QWidget):
         self.icon_day = QPixmap('body/image/' + icon_day)
         self.icon_night = QPixmap('body/image/' + icon_night)
 
-        # INITIALIZATION OF CREATED ALARMS
-        self.list_alarm_clock = list_alarm_clock
-        try:  # handle a small number of alarms
-            self.visible_alarm_clock = self.list_alarm_clock[:3]
-        except IndexError:
-            self.visible_alarm_clock = self.list_alarm_clock[:len(self.list_alarm_clock)]
-
         # CREATE NEW ALARM CLOCK
-        self.alarm_clock = QFrame(parent)
+        self.alarm_clock = QFrame(alarm_clock_area)
         self.alarm_clock.setMinimumSize(min_width_alarm_clock, min_height_alarm_clock)
         self.alarm_clock.setProperty("class", "alarm_clock")
 

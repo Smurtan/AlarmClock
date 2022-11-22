@@ -27,9 +27,9 @@ class Ui_MainWindow:
         body = Ui_Body(self.circle_bg)
         header = Ui_Header(self.circle_bg)
 
-        body.addNewAlarmClock()
-        body.addNewAlarmClock()
-        body.addNewAlarmClock()
+        #body.addNewAlarmClock(alarm_clock_area=body.alarm_clock_area)
+        body.addNewAlarmClock(alarm_clock_area=body.alarm_clock_area)
+        #body.addNewAlarmClock(alarm_clock_area=body.alarm_clock_area)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
