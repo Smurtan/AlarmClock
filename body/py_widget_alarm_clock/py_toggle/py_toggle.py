@@ -15,25 +15,20 @@ class PyToggle(QCheckBox):
     ):
         QCheckBox.__init__(self)
 
-        # SET DEFAULT PARAMETERS
         self.setFixedSize(width, 28)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
-        # COLORS
         self._bg_color = bg_color
         self._circle_color = circle_color
         self._activate_color = active_color
 
-        # CREAT ANIMATION
         self._emoji_position = 0
         self.animation = QPropertyAnimation(self, b"circle_position", self)
         self.animation.setEasingCurve(animation_curve)
         self.animation.setDuration(500)  # Time in milliseconds
 
-        # CONNECT STATE CHANGED
         self.stateChanged.connect(self.start_transition)
 
-    # CREAT NEW SET AND GET PROPERTY
     @pyqtProperty(int)  # Get
     def circle_position(self):
         return self._emoji_position
@@ -49,21 +44,16 @@ class PyToggle(QCheckBox):
             self.animation.setEndValue(self.width() - 28)
         else:
             self.animation.setEndValue(0)
-
-        # START ANIMATION
         self.animation.start()
 
-    # SET NEW HIT AREA
     def hitButton(self, pos: QPoint):
         return self.contentsRect().contains(pos)
 
     # DRAW NEW ITEMS
     def paintEvent(self, e):
-        # SET PAINTER
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        # SET AS ON PEN
         p.setPen(Qt.PenStyle.NoPen)
 
         # CHANGING THE FONT FOR EMOTICONS
@@ -71,26 +61,19 @@ class PyToggle(QCheckBox):
         font.setPixelSize(20)
         p.setFont(font)
 
-        # DRAW RECTANGLE
         rect = QRect(0, 0, self.width(), self.height())
 
-        # CHECK IF IS CHECKED
         if not self.isChecked():
-            # DRAW BG
             p.setBrush(QColor(self._bg_color))
             p.drawRoundedRect(0, 0, rect.width(), self.height(), self.height() / 2, self.height() / 2)
 
-            # DRAW EMOTICON
             p.setPen(Qt.PenStyle.DashLine)
             p.drawText(QPoint(self._emoji_position, 21), "\U0001F634")  # emoticons in unicode
         else:
-            # DRAW BG
             p.setBrush(QColor(self._activate_color))
             p.drawRoundedRect(0, 0, rect.width(), self.height(), self.height() / 2, self.height() / 2)
 
-            # DRAW EMOTICON
             p.setPen(Qt.PenStyle.DashLine)
             p.drawText(QPoint(self._emoji_position, 21), "\U0001F60A")  # emoticons in unicode
 
-        # END DRAW
         p.end()

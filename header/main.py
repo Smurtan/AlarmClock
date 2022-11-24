@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import *
 
 class Ui_Header:
     def __init__(self, parent):
-        # application header, with time and additional information
         self.header = QFrame(parent)
         self.header.setGeometry(QRect(0, 0, 620, 230))
         self.header.setProperty("class", "header")

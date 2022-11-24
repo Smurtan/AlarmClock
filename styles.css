@@ -24,12 +24,12 @@
     border: none;
 }
 
-.alarm_clock_area {
+.alarm_clocks_area {
     background: none;
     border: none;
 }
 
-.alarm_clock_scroll_area {
+.alarm_clocks_scroll_area {
     border: none;
     background-color: rgba(0, 0, 0, 0);
 }
