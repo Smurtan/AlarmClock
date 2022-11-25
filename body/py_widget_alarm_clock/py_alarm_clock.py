@@ -1,6 +1,6 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QPixmap
-from PyQt6.QtWidgets import QWidget, QFrame, QGroupBox, QLabel, QHBoxLayout
+from PyQt6.QtCore import Qt, QSize, QPoint, QRect, QEasingCurve
+from PyQt6.QtGui import QFont, QPixmap, QPainter, QColor, QPaintEvent
+from PyQt6.QtWidgets import QWidget, QFrame, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 
 from .py_toggle import PyToggle
 
@@ -17,7 +17,7 @@ class PyAlarmClock(QWidget):
             height_alarm_clock=100,
             width_alarm_clock=290,
     ):
-        QWidget.__init__(self)
+        QWidget.__init__(self, alarm_clock_area)
 
         self._font_alarm_clock_time_enable = QFont()
         self._font_alarm_clock_time_enable.setFamily(family_fonts)
@@ -31,7 +31,7 @@ class PyAlarmClock(QWidget):
         self._icon_day = QPixmap('body/image/' + icon_day)
         self._icon_night = QPixmap('body/image/' + icon_night)
 
-        self.alarm_clock = QFrame(alarm_clock_area)
+        self.alarm_clock = QFrame()
         self.alarm_clock.setMinimumSize(width_alarm_clock, height_alarm_clock)
         self.alarm_clock.setProperty("class", "alarm_clock")
 
@@ -59,6 +59,11 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         self._alarm_clock_horizontal_layout.addWidget(self._space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
         self._alarm_clock_horizontal_layout.addWidget(self._alarm_clock_toggle, alignment=Qt.AlignmentFlag.AlignRight)
+
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.alarm_clock)
+        self.setLayout(layout)
 
     def setMinimumSize(self, minw: int, minh: int) -> None:
         self.alarm_clock.setMinimumSize(minw, minh)

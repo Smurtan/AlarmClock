@@ -25,6 +25,11 @@ class MainWindow(QMainWindow):
         self.header = Ui_Header(self.circle_bg)
 
         self.body.addNewAlarmClock()
+        self.body.addNewAlarmClock()
+        self.body.addNewAlarmClock()
+        self.body.addNewAlarmClock()
+        self.body.addNewAlarmClock()
+        self.body.addNewAlarmClock()
 
         # setting window size
         self.setFixedSize(QSize(620, 620))

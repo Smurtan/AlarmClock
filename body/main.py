@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtCore import Qt, QRect, QSize
 from PyQt6.QtWidgets import QWidget, QFrame, QScrollArea, QVBoxLayout
 
 from .py_widget_alarm_clock import PyAlarmClock
@@ -10,24 +10,24 @@ class Ui_Body:
         self.spacing_alarm_clock = 20
 
         self.alarm_clocks_area = QFrame()
-        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, 460))
+        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, 340))
         self.alarm_clocks_area.setProperty("class", "alarm_clocks_area")
 
         self.alarm_clocks_scroll_area = QScrollArea(parent)
         self.alarm_clocks_scroll_area.setGeometry(QRect(0, 230, 620, 340))
         self.alarm_clocks_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.alarm_clocks_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.alarm_clocks_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.alarm_clocks_scroll_area.setProperty("class", "alarm_clocks_scroll_area")
         self.alarm_clocks_scroll_area.setWidget(self.alarm_clocks_area)
 
         # SO HAVE 1 ALARM CLOCK BY DEFAULT
         self.default_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
 
-        # ALIGNS ALL ALARM CLOCKS
-        self.vertical_layout = QVBoxLayout(self.alarm_clocks_area)
-        #self.vertical_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        #self.vertical_layout.setSpacing(self.spacing_alarm_clock)
-        #self.vertical_layout.addWidget(self.default_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout_alarm_clocks = QVBoxLayout(self.alarm_clocks_area)
+        self.vertical_layout_alarm_clocks.setContentsMargins(0, 0, 0, 0)
+        self.vertical_layout_alarm_clocks.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.vertical_layout_alarm_clocks.setSpacing(self.spacing_alarm_clock)
+        self.vertical_layout_alarm_clocks.addWidget(self.default_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # INITIALIZATION OF CREATED ALARMS
         self.list_alarm_clocks = [self.default_alarm_clock]
@@ -43,21 +43,21 @@ class Ui_Body:
         new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
 
         # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
-        self.vertical_layout.addWidget(new_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout_alarm_clocks.addWidget(new_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.list_alarm_clocks.append(new_alarm_clock)
 
         # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
         self.changingWidthAlarmClock(0)
 
         # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
-        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) + 1) * (
+        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
                 self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
 
     def determiningDirectionScrolling(self, scrolled_pixels: int) -> int:
         if self.last_scroll < scrolled_pixels:
-            return 1
+            return 1  # down
         else:
-            return 0
+            return 0  # up
 
     def changingWidthAlarmClock(self, scrolled_pixels: int) -> None:
         count_scroll = scrolled_pixels // 60
@@ -76,7 +76,7 @@ class Ui_Body:
                 self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock + scroll_direction:
                                                                   first_visible_alarm_clock + scroll_direction + 3]
             else:
-                self.visible_alarm_clock = self.list_alarm_clocks[count_alarm_clocks - 3:]
+                self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock:]
 
         # WE WILL EXCLUDE THE INTERRUPTION IF THERE IS A SMALL NUMBER OF ALARM CLOCKS
         try:
@@ -89,5 +89,4 @@ class Ui_Body:
                 self.visible_alarm_clock[1].setMinimumSize(490, 100)
                 self.visible_alarm_clock[2].setMinimumSize(260, 100)
         except IndexError:
-            print("У нас закончились будильники")
             pass
