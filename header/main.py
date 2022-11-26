@@ -2,12 +2,16 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import *
 
+from button import PyCloseButton
+
 
 class Ui_Header:
     def __init__(self, parent):
         self.header = QFrame(parent)
         self.header.setGeometry(QRect(0, 0, 620, 230))
         self.header.setProperty("class", "header")
+
+        self.close_button = PyCloseButton(self.header)
 
         self.font_time = QFont()
         self.font_time.setFamily("Segoe UI")
