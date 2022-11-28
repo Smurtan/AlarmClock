@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt, QSize, QPoint, QRect, QEasingCurve
 from PyQt6.QtGui import QFont, QPixmap, QPainter, QColor, QPaintEvent
 from PyQt6.QtWidgets import QWidget, QFrame, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 
-from .py_toggle import PyToggle
+from body.py_widget_alarm_clock.py_toggle import PyToggle
 
 
 class PyAlarmClock(QWidget):
