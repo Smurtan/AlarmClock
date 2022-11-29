@@ -12,7 +12,7 @@ class PyAddButton(QPushButton):
             bg_color="#29b078",
             active_color="225D44FF",
             plus_color="B02929FF",
-            plus_width=50
+            plus_width=30
     ):
         QPushButton.__init__(self, parent)
 
@@ -40,9 +40,9 @@ class PyAddButton(QPushButton):
         pen.setWidth(3)
         p.setPen(pen)
         p.setBrush(QColor(self._plus_color))
-        p.drawLine(QPoint(self.width() // 2 - self._plus_width // 2, 600),
-                   QPoint(self.width() // 2 + self._plus_width // 2, 600))
-        p.drawLine(QPoint(self.width() // 2, 600 - self._plus_width // 2),
-                   QPoint(self.width() // 2, 600 + self._plus_width // 2))
+        p.drawLine(QPoint(self.width() // 2 - self._plus_width // 2, 20),
+                   QPoint(self.width() // 2 + self._plus_width // 2, 20))
+        p.drawLine(QPoint(self.width() // 2, 20 - self._plus_width // 2),
+                   QPoint(self.width() // 2, 20 + self._plus_width // 2))
 
         p.end()

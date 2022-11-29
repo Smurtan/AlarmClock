@@ -1,1 +1,1 @@
-from .main import Ui_Header
+from .header_main import Ui_Header
