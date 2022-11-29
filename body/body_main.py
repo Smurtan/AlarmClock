@@ -1,7 +1,9 @@
-from PyQt6.QtCore import Qt, QRect, QSize
-from PyQt6.QtWidgets import QWidget, QFrame, QScrollArea, QVBoxLayout
+from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
+                             QVBoxLayout, QPushButton)
 
-from .py_widget_alarm_clock import PyAlarmClock
+from body.py_widget_alarm_clock import PyAlarmClock
+from body.button import PyAddButton
 
 
 class Ui_Body:
@@ -38,6 +40,9 @@ class Ui_Body:
         self.alarm_clocks_scroll_area.verticalScrollBar().valueChanged.connect(self.changingWidthAlarmClock)
 
         self.changingWidthAlarmClock(0)  # for the default alarm clock
+
+        self.new_alarm_clock_button = PyAddButton(parent)
+        self.new_alarm_clock_button.setGeometry(160, 580, 300, 40)
 
     def addNewAlarmClock(self) -> None:
         new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
