@@ -20,40 +20,27 @@ class AlarmClockSetting(QDialog):
 
         self.container = QFrame()
 
-        # TIME EDIT
-        self.time_edit_area = QFrame()
+        self.time_alarm_clock_label = QLabel("Когда вы хотите меня услышать?")
+        self.time_alarm_clock_label.setFont(QFont("Segoe UI", 20))
 
-        self.time_alarm_clock_label = QLabel("Когда вы хотите меня услышать?", self.time_edit_area)
-        self.time_alarm_clock_setting = QTimeEdit(self.time_edit_area)
-
-        self.horizontal_time_area_layout = QHBoxLayout(self.time_edit_area)
-        self.horizontal_time_area_layout.addWidget(self.time_alarm_clock_label)
-        self.horizontal_time_area_layout.addWidget(self.time_alarm_clock_setting)
+        self.time_alarm_clock_setting = QTimeEdit()
+        self.time_alarm_clock_setting.setMinimumSize(90, 40)
 
         # DAYS OF WEEK
         self.area_days_of_week = QFrame()
 
-        self.checkbox_monday = PyCheckBoxDay("Пн", self.area_days_of_week)
-        self.checkbox_tuesday = PyCheckBoxDay("Вт", self.area_days_of_week)
-        self.checkbox_wednesday = PyCheckBoxDay("Ср", self.area_days_of_week)
-        self.checkbox_thursday = PyCheckBoxDay("Чт", self.area_days_of_week)
-        self.checkbox_friday = PyCheckBoxDay("Пт", self.area_days_of_week)
-        self.checkbox_saturday = PyCheckBoxDay("Сб", self.area_days_of_week)
-        self.checkbox_sunday = PyCheckBoxDay("Вс", self.area_days_of_week)
-        # в список
-
         self.horizontal_days_of_week_layout = QHBoxLayout(self.area_days_of_week)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_monday)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_tuesday)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_wednesday)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_thursday)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_friday)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_saturday)
-        self.horizontal_days_of_week_layout.addWidget(self.checkbox_sunday)
+
+        self.checkbox_days = []
+        for day in [('Пн', '#0'), ('Вт', '#0'), ('Ср', '#0'), ('Чт', '#0'),
+                    ('Пт', '#0'), ('Сб', '#0'), ('Вс', '#ff0000')]:
+            self.checkbox_days.append(PyCheckBoxDay(day[0], self.area_days_of_week, text_color=day[1]))
+            self.horizontal_days_of_week_layout.addWidget(self.checkbox_days[-1])
 
         self.vertical_layout = QVBoxLayout(self.container)
-        self.vertical_layout.addWidget(self.time_edit_area)
-        self.vertical_layout.addWidget(self.area_days_of_week)
+        self.vertical_layout.addWidget(self.time_alarm_clock_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.time_alarm_clock_setting, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.area_days_of_week, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # set default
         self.layout = QVBoxLayout()
