@@ -2,7 +2,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import *
 
-import time
+import sys
 
 from header.button import PyCloseButton
 
@@ -15,6 +15,7 @@ class Ui_Header:
 
         self.close_button = PyCloseButton(self.header)
         self.close_button.setGeometry(137, 0, 340, 45)
+        self.close_button.clicked.connect(self.closeApp)
 
         self.font_time = QFont()
         self.font_time.setFamily("Segoe UI")
@@ -29,7 +30,11 @@ class Ui_Header:
         self.time_label.setGeometry(QRect(190, 80, 240, 85))
         self.time_label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         self.time_label.setFont(self.font_time)
+        # избавиться от css
         self.time_label.setProperty("class", "time_label")
 
     def updateCurrentTime(self):
         self.time_label.setText(QDateTime.currentDateTime().toString("hh:mm"))
+
+    def closeApp(self):
+        sys.exit()
