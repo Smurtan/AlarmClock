@@ -1,15 +1,16 @@
-from PyQt6.QtCore import Qt, QSize, QPoint, QRect, QEasingCurve
-from PyQt6.QtGui import QFont, QPixmap, QPainter, QColor, QPaintEvent
-from PyQt6.QtWidgets import QWidget, QFrame, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt6.QtCore import Qt, QTime
+from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtWidgets import QPushButton, QWidget, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 
 from body.py_widget_alarm_clock.py_toggle import PyToggle
+from body.py_widget_alarm_clock.py_alarm_clock_setting import PyAlarmClockSetting
 
 
 class PyAlarmClock(QWidget):
     def __init__(
             self,
             alarm_clock_area,
-            time="00:00",
+            time=QTime.currentTime(),
             family_fonts="Segoe UI",
             point_size=26,
             icon_day="icon_sun.png",
@@ -31,7 +32,8 @@ class PyAlarmClock(QWidget):
         self._icon_day = QPixmap('body/image/' + icon_day)
         self._icon_night = QPixmap('body/image/' + icon_night)
 
-        self.alarm_clock = QFrame()
+        self.alarm_clock = QPushButton()
+        self.alarm_clock.clicked.connect(self.clicked)
         self.alarm_clock.setMinimumSize(width_alarm_clock, height_alarm_clock)
         self.alarm_clock.setProperty("class", "alarm_clock")
 
@@ -43,8 +45,9 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_icon = QLabel(self._space_for_time)
         self._alarm_clock_icon.setPixmap(self._icon_day)
 
-        self._alarm_clock_time = QLabel(time, self._space_for_time)
+        self._alarm_clock_time = QLabel(time.toString("hh:mm"), self._space_for_time)
         self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
+        self._time = time
 
         self._alarm_clock_toggle = PyToggle()
 
@@ -67,3 +70,17 @@ class PyAlarmClock(QWidget):
 
     def setMinimumSize(self, minw: int, minh: int) -> None:
         self.alarm_clock.setMinimumSize(minw, minh)
+
+    def setTime(self, time: QTime):
+        self._alarm_clock_time.setText(time.toString("hh:mm"))
+        self._time = time
+
+    def enableAlarmClock(self):
+        self._alarm_clock_toggle.setChecked(1)
+
+    def settingAlarmClock(self):
+        setting_alarm_clock = PyAlarmClockSetting(self, current_time=self._time)
+        setting_alarm_clock.exec()
+
+    def clicked(self):
+        self.settingAlarmClock()
