@@ -38,9 +38,6 @@ class MainWindow(QMainWindow):
         # we install a frame with all the contents in the central widget
         self.setCentralWidget(self.container)
 
-    def mousePressEvent(self, a0: QtGui.QMouseEvent) -> None:
-        print(a0.pos())
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
