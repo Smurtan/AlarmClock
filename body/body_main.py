@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtCore import Qt, QRect, QTimer
 from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
                              QVBoxLayout)
 
@@ -23,16 +23,16 @@ class Ui_Body:
         self.alarm_clocks_scroll_area.setWidget(self.alarm_clocks_area)
 
         # SO HAVE 1 ALARM CLOCK BY DEFAULT
-        #self.default_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
+        # self.default_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
 
         self.vertical_layout_alarm_clocks = QVBoxLayout(self.alarm_clocks_area)
         self.vertical_layout_alarm_clocks.setContentsMargins(0, 0, 0, 0)
         self.vertical_layout_alarm_clocks.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.vertical_layout_alarm_clocks.setSpacing(self.spacing_alarm_clock)
-        #self.vertical_layout_alarm_clocks.addWidget(self.default_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
+        # self.vertical_layout_alarm_clocks.addWidget(self.default_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # INITIALIZATION OF CREATED ALARMS
-        self.list_alarm_clocks = []#self.default_alarm_clock]
+        self.list_alarm_clocks = []  # self.default_alarm_clock]
 
         # SETTING PARAMETERS FOR THE IMPLEMENTATION OF CHANGING THE SIZE OF ALARMS
         self.scroll_value = 0
@@ -45,20 +45,28 @@ class Ui_Body:
         self.new_alarm_clock_button.setGeometry(160, 580, 300, 40)
         self.new_alarm_clock_button.clicked.connect(self.addNewAlarmClock)
 
-    def addNewAlarmClock(self) -> None:
-        new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
-        new_alarm_clock.settingAlarmClock()
+        self.timer_alarm_clock = QTimer()
+        self.timer_alarm_clock.setInterval(2000)  # time in millisecond
+        self.timer_alarm_clock.timeout.connect(self.checkAlarmClock)
+        self.timer_alarm_clock.start()
 
-        # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
-        self.vertical_layout_alarm_clocks.addWidget(new_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+    def addNewAlarmClock(self) -> None:
+        new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, self.list_alarm_clocks,
+                                       height_alarm_clock=self.height_alarm_clock)
         self.list_alarm_clocks.append(new_alarm_clock)
 
-        # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
-        self.changingWidthAlarmClock(0)
+        # THE ALARM WILL BE ADDED IF THE USER CLICKS OK
+        if new_alarm_clock.settingAlarmClock():
+            # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
+            self.vertical_layout_alarm_clocks.addWidget(new_alarm_clock,
+                                                        alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
-        # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
-        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
-                self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
+            # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
+            self.changingWidthAlarmClock(0)
+
+            # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
+            self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
+                    self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
 
     def determiningDirectionScrolling(self, scrolled_pixels: int) -> int:
         if self.last_scroll < scrolled_pixels:
@@ -97,3 +105,8 @@ class Ui_Body:
                 self.visible_alarm_clock[2].setMinimumSize(260, 100)
         except IndexError:
             pass
+
+    def checkAlarmClock(self):
+        for alarm_clock in self.list_alarm_clocks:
+            if alarm_clock.checkTimeAlarmClock():
+                print("Ура, я родился!")

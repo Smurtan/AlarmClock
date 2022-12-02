@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QTime
+from PyQt6.QtCore import Qt, QTime, QDate
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import QPushButton, QWidget, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 
@@ -10,6 +10,7 @@ class PyAlarmClock(QWidget):
     def __init__(
             self,
             alarm_clock_area,
+            list_alarm_clock,
             time=QTime.currentTime(),
             family_fonts="Segoe UI",
             point_size=26,
@@ -19,6 +20,9 @@ class PyAlarmClock(QWidget):
             width_alarm_clock=290,
     ):
         QWidget.__init__(self, alarm_clock_area)
+
+        self._list_alarm_clock = list_alarm_clock
+        self._serial_number = len(self._list_alarm_clock) - 1
 
         self._font_alarm_clock_time_enable = QFont()
         self._font_alarm_clock_time_enable.setFamily(family_fonts)
@@ -63,6 +67,8 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_horizontal_layout.addWidget(self._space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
         self._alarm_clock_horizontal_layout.addWidget(self._alarm_clock_toggle, alignment=Qt.AlignmentFlag.AlignRight)
 
+        self.check_days_of_week = [False for i in range(7)]
+
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.alarm_clock)
@@ -75,12 +81,28 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_time.setText(time.toString("hh:mm"))
         self._time = time
 
+    def setDaysOfWeek(self, check_days: list) -> None:
+        for day in range(7):
+            self.check_days_of_week[day] = check_days[day].isChecked()
+
     def enableAlarmClock(self):
         self._alarm_clock_toggle.setChecked(1)
 
-    def settingAlarmClock(self):
-        setting_alarm_clock = PyAlarmClockSetting(self, current_time=self._time)
-        setting_alarm_clock.exec()
+    def checkTimeAlarmClock(self) -> bool:
+        if self._time.minute() == QTime.currentTime().minute() and \
+                self.check_days_of_week[QDate.currentDate().dayOfWeek() - 1] and self._alarm_clock_toggle.isChecked():
+            return True
+        else:
+            return False
+
+    def settingAlarmClock(self) -> int:
+        setting_alarm_clock = PyAlarmClockSetting(self, selected_time=self._time,
+                                                  selected_days_of_week=self.check_days_of_week)
+        return setting_alarm_clock.exec()
 
     def clicked(self):
         self.settingAlarmClock()
+
+    def removeAlarmClock(self):
+        self._list_alarm_clock[self._serial_number].deleteLater()
+        self._list_alarm_clock.pop(self._serial_number)
