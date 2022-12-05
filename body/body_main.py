@@ -37,6 +37,7 @@ class Ui_Body:
         # SETTING PARAMETERS FOR THE IMPLEMENTATION OF CHANGING THE SIZE OF ALARMS
         self.scroll_value = 0
         self.last_scroll = 0  # will be used to determine the scrolling direction
+        self.last_count_alarm_clocks = 0
         self.alarm_clocks_scroll_area.verticalScrollBar().valueChanged.connect(self.changingWidthAlarmClock)
 
         self.changingWidthAlarmClock(0)  # for the default alarm clock
@@ -55,6 +56,9 @@ class Ui_Body:
                                        height_alarm_clock=self.height_alarm_clock)
         self.list_alarm_clocks.append(new_alarm_clock)
 
+        # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
+        self.changeHeightAlarmClockArea()
+
         # THE ALARM WILL BE ADDED IF THE USER CLICKS OK
         if new_alarm_clock.settingAlarmClock():
             # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
@@ -64,15 +68,23 @@ class Ui_Body:
             # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
             self.changingWidthAlarmClock(0)
 
-            # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
-            self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
-                    self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
-
     def determiningDirectionScrolling(self, scrolled_pixels: int) -> int:
         if self.last_scroll < scrolled_pixels:
             return 1  # down
         else:
             return 0  # up
+
+    def changeHeightAlarmClockArea(self):
+        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
+                self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
+
+    def changeVisibleAlarmClocks(self, count_alarm_clocks, first_visible_alarm_clock, scroll_direction):
+        # +4 TO THE FIRST VISIBLE ALARM CLOCK HELPS TO DETERMINE WHEN 4 ALARMS ARE VISIBLE IN THE FIELD
+        if count_alarm_clocks >= first_visible_alarm_clock + 4:
+            self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock + scroll_direction:
+                                                              first_visible_alarm_clock + scroll_direction + 3]
+        else:
+            self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock:]
 
     def changingWidthAlarmClock(self, scrolled_pixels: int) -> None:
         count_scroll = scrolled_pixels // 60
@@ -86,12 +98,13 @@ class Ui_Body:
 
         # THE LIST OF VISIBLE ALARMS CHANGES ONLY WHEN 3 WHOLE ALARMS ARE VISIBLE
         if (count_scroll + 1) % 2 != 0:
-            # +4 TO THE FIRST VISIBLE ALARM CLOCK HELPS TO DETERMINE WHEN 4 ALARMS ARE VISIBLE IN THE FIELD
-            if count_alarm_clocks >= first_visible_alarm_clock + 4:
-                self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock + scroll_direction:
-                                                                  first_visible_alarm_clock + scroll_direction + 3]
-            else:
-                self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock:]
+            self.changeVisibleAlarmClocks(count_alarm_clocks, first_visible_alarm_clock, scroll_direction)
+
+        if self.last_count_alarm_clocks > count_alarm_clocks:
+            self.changeHeightAlarmClockArea()
+            self.changeVisibleAlarmClocks(count_alarm_clocks, first_visible_alarm_clock, scroll_direction)
+
+        self.last_count_alarm_clocks = count_alarm_clocks
 
         # WE WILL EXCLUDE THE INTERRUPTION IF THERE IS A SMALL NUMBER OF ALARM CLOCKS
         try:
@@ -109,4 +122,4 @@ class Ui_Body:
     def checkAlarmClock(self):
         for alarm_clock in self.list_alarm_clocks:
             if alarm_clock.checkTimeAlarmClock():
-                print("Ура, я родился!")
+                pass  # print("Ура, я родился!")

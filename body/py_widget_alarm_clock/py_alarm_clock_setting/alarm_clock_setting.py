@@ -10,9 +10,13 @@ class PyAlarmClockSetting(QDialog):
             self,
             alarm_clock=None,
             selected_time=QTime.currentTime(),
-            selected_days_of_week=[False for i in range(7)]
+            selected_days_of_week=None
     ):
         super().__init__(alarm_clock)
+
+        if selected_days_of_week is None:
+            selected_days_of_week = [False for i in range(7)]
+
         self._alarm_clock = alarm_clock
         self._selected_days_of_week = selected_days_of_week
 
@@ -43,9 +47,9 @@ class PyAlarmClockSetting(QDialog):
             self.horizontal_days_of_week_layout.addWidget(self.checkbox_days[-1])
 
         for day in range(7):
-            self.checkbox_days[day].setChecked(selected_days_of_week[day])
+            self.checkbox_days[day].setChecked(self._selected_days_of_week[day])
 
-        if not any(selected_days_of_week):
+        if not any(self._selected_days_of_week):
             self.checkbox_days[QDate.currentDate().dayOfWeek() - 1].setChecked(1)
 
         self.remove_button = QPushButton()

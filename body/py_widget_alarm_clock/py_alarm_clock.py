@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QTime, QDate
+from PyQt6.QtCore import Qt, QTime, QDate, QRect
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtWidgets import QPushButton, QWidget, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
 
@@ -21,8 +21,11 @@ class PyAlarmClock(QWidget):
     ):
         QWidget.__init__(self, alarm_clock_area)
 
+        self._alarm_clock_area = alarm_clock_area
+        self._height_alarm_clock = height_alarm_clock
+
         self._list_alarm_clock = list_alarm_clock
-        self._serial_number = len(self._list_alarm_clock) - 1
+        self.serial_number = len(self._list_alarm_clock)
 
         self._font_alarm_clock_time_enable = QFont()
         self._font_alarm_clock_time_enable.setFamily(family_fonts)
@@ -104,5 +107,8 @@ class PyAlarmClock(QWidget):
         self.settingAlarmClock()
 
     def removeAlarmClock(self):
-        self._list_alarm_clock[self._serial_number].deleteLater()
-        self._list_alarm_clock.pop(self._serial_number)
+        self._list_alarm_clock[self.serial_number].deleteLater()
+        self._list_alarm_clock.pop(self.serial_number)
+        self._alarm_clock_area.setGeometry(QRect(0, 0, 620, self._alarm_clock_area.height() - self._height_alarm_clock))
+        for sequence_number in range(self.serial_number, len(self._list_alarm_clock)):
+            self._list_alarm_clock[sequence_number].serial_number = sequence_number
