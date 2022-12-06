@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt, QRect, QTimer
 from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
                              QVBoxLayout)
+import vlc
 
 from body.py_widget_alarm_clock import PyAlarmClock
 from body.button import PyAddButton
@@ -50,6 +51,8 @@ class Ui_Body:
         self.timer_alarm_clock.setInterval(2000)  # time in millisecond
         self.timer_alarm_clock.timeout.connect(self.checkAlarmClock)
         self.timer_alarm_clock.start()
+
+        self.sound = vlc.MediaPlayer("songs.mp3")
 
     def addNewAlarmClock(self) -> None:
         new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, self.list_alarm_clocks,
@@ -122,4 +125,6 @@ class Ui_Body:
     def checkAlarmClock(self):
         for alarm_clock in self.list_alarm_clocks:
             if alarm_clock.checkTimeAlarmClock():
-                pass  # print("Ура, я родился!")
+                # Можно запускать таймер для ближайшего будильника каждый раз при запуске или игре
+                print("Ура, я родился!")
+                self.sound.play()
