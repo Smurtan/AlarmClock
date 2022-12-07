@@ -1,1 +1,1 @@
-from .alarm_clock_setting import PyAlarmClockSetting
+from .py_alarm_clock_setting import PyAlarmClockSetting

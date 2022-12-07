@@ -5,6 +5,7 @@ import vlc
 
 from body.py_widget_alarm_clock import PyAlarmClock
 from body.button import PyAddButton
+from body.py_widget_alarm_clock.py_alarm_clock_stop import PyAlarmClockStop
 
 
 class Ui_Body:
@@ -123,8 +124,8 @@ class Ui_Body:
             pass
 
     def checkAlarmClock(self):
-        for alarm_clock in self.list_alarm_clocks:
-            if alarm_clock.checkTimeAlarmClock():
+        for serial_number_alarm_clock in range(len(self.list_alarm_clocks)):
+            if self.list_alarm_clocks[serial_number_alarm_clock].checkTimeAlarmClock():
                 # Можно запускать таймер для ближайшего будильника каждый раз при запуске или игре
-                print("Ура, я родился!")
-                self.sound.play()
+                stop_widget = PyAlarmClockStop(self.list_alarm_clocks[serial_number_alarm_clock], self.sound)
+                stop_widget.exec()
