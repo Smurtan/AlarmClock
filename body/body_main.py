@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QRect, QTimer
+from PyQt6.QtCore import Qt, QRect, QTimer, QTime, QDate
 from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
                              QVBoxLayout)
 import vlc
@@ -49,11 +49,12 @@ class Ui_Body:
         self.new_alarm_clock_button.clicked.connect(self.addNewAlarmClock)
 
         self.timer_alarm_clock = QTimer()
-        self.timer_alarm_clock.setInterval(2000)  # time in millisecond
-        self.timer_alarm_clock.timeout.connect(self.checkAlarmClock)
-        self.timer_alarm_clock.start()
+        self.timer_alarm_clock.timeout.connect(self.callingAlarmClock)
 
         self.sound = vlc.MediaPlayer("songs.mp3")
+
+        self.serial_number_nearest_alarm_clock = None
+        self.determiningNextAlarmClock()
 
     def addNewAlarmClock(self) -> None:
         new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, self.list_alarm_clocks,
@@ -71,6 +72,7 @@ class Ui_Body:
 
             # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
             self.changingWidthAlarmClock(0)
+            self.determiningNextAlarmClock()
 
     def determiningDirectionScrolling(self, scrolled_pixels: int) -> int:
         if self.last_scroll < scrolled_pixels:
@@ -123,9 +125,31 @@ class Ui_Body:
         except IndexError:
             pass
 
-    def checkAlarmClock(self):
-        for serial_number_alarm_clock in range(len(self.list_alarm_clocks)):
-            if self.list_alarm_clocks[serial_number_alarm_clock].checkTimeAlarmClock():
-                # Можно запускать таймер для ближайшего будильника каждый раз при запуске или игре
-                stop_widget = PyAlarmClockStop(self.list_alarm_clocks[serial_number_alarm_clock], self.sound)
-                stop_widget.exec()
+    def determiningNextAlarmClock(self):
+        # выходит, если был удалён выбранный будильник
+        time_to_nearest_alarm_clock = 24 * 60 * 60
+        current_day_of_week = QDate.currentDate().dayOfWeek() - 1
+        for alarm_clock in self.list_alarm_clocks:
+            if alarm_clock.check_days_of_week[current_day_of_week]:
+                time_to_alarm_clock = QTime.secsTo(QTime.currentTime(), alarm_clock.time)
+                print('Время до ближайшего будильника:')
+                print(QTime.secsTo(QTime.currentTime(), alarm_clock.time))
+                print('\n')
+                if (0 < time_to_alarm_clock < time_to_nearest_alarm_clock and
+                        QTime.currentTime().minute() != alarm_clock.time.minute()):
+                    # to make the alarm clock sing at the beginning of the desired minute
+                    time_to_nearest_alarm_clock = time_to_alarm_clock // 60 + (60 - QTime.currentTime().second())
+                    self.serial_number_nearest_alarm_clock = alarm_clock.serial_number
+
+        self.timer_alarm_clock.setInterval(time_to_nearest_alarm_clock * 1000)  # time in millisecond
+        self.timer_alarm_clock.start()
+        print('Конечное время:')
+        print(time_to_nearest_alarm_clock)
+        print('\n')
+
+    def callingAlarmClock(self):
+        if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
+            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock], self.sound)
+            stop_widget.exec()
+
+        self.determiningNextAlarmClock()
