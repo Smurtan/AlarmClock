@@ -133,9 +133,6 @@ class Ui_Body:
         for alarm_clock in self.list_alarm_clocks:
             if alarm_clock.check_days_of_week[current_day_of_week]:
                 time_to_alarm_clock = QTime.secsTo(QTime.currentTime(), alarm_clock.time)
-                print('Время до ближайшего будильника:')
-                print(QTime.secsTo(QTime.currentTime(), alarm_clock.time))
-                print('\n')
                 if (0 < time_to_alarm_clock < time_to_nearest_alarm_clock and
                         QTime.currentTime().minute() != alarm_clock.time.minute()):
                     # to make the alarm clock sing at the beginning of the desired minute
@@ -144,9 +141,6 @@ class Ui_Body:
 
         self.timer_alarm_clock.setInterval(time_to_nearest_alarm_clock * 1000)  # time in millisecond
         self.timer_alarm_clock.start()
-        print('Конечное время:')
-        print(time_to_nearest_alarm_clock)
-        print('\n')
 
     def callingAlarmClock(self):
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
