@@ -57,7 +57,7 @@ class Ui_Body:
         self.determiningNextAlarmClock()
 
     def addNewAlarmClock(self) -> None:
-        new_alarm_clock = PyAlarmClock(self.alarm_clocks_area, self.list_alarm_clocks,
+        new_alarm_clock = PyAlarmClock(self, self.alarm_clocks_area, self.list_alarm_clocks,
                                        height_alarm_clock=self.height_alarm_clock)
         self.list_alarm_clocks.append(new_alarm_clock)
 
@@ -127,6 +127,7 @@ class Ui_Body:
 
     def determiningNextAlarmClock(self):
         # выходит, если был удалён выбранный будильник
+        # не обновляется после изменения будильника
         time_to_nearest_alarm_clock = 24 * 60 * 60
         current_day_of_week = QDate.currentDate().dayOfWeek() - 1
         for alarm_clock in self.list_alarm_clocks:

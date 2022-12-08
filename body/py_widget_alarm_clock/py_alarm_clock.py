@@ -9,6 +9,7 @@ from body.py_widget_alarm_clock.py_alarm_clock_setting import PyAlarmClockSettin
 class PyAlarmClock(QWidget):
     def __init__(
             self,
+            body,
             alarm_clock_area,
             list_alarm_clock,
             time=QTime.currentTime(),
@@ -21,6 +22,7 @@ class PyAlarmClock(QWidget):
     ):
         QWidget.__init__(self, alarm_clock_area)
 
+        self.body = body
         self._alarm_clock_area = alarm_clock_area
         self._height_alarm_clock = height_alarm_clock
 

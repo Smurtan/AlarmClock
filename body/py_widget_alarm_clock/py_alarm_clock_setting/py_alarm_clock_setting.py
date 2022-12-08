@@ -71,6 +71,7 @@ class PyAlarmClockSetting(QDialog):
         self._alarm_clock.setTime(self.time_alarm_clock_setting.time())
         self._alarm_clock.enableAlarmClock()
         self._alarm_clock.setDaysOfWeek(self.checkbox_days)
+        self._alarm_clock.body.determiningNextAlarmClock()
         self.accept()
 
     def rejectSetting(self) -> None:
