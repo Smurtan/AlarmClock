@@ -16,7 +16,7 @@ class PyAlarmClockStop(QDialog):
 
         self.stop_button = QPushButton()
         self.stop_button.setText("Stop")
-        self.stop_button.clicked.connect(self.stopMusic)
+        self.stop_button.clicked.connect(self.closeEvent)
 
         try:
             self.sound.play()
@@ -27,7 +27,7 @@ class PyAlarmClockStop(QDialog):
         self.layout.addWidget(self.stop_button)
         self.setLayout(self.layout)
 
-    def stopMusic(self) -> None:  # не останавливается если просто выйти
+    def closeEvent(self, a0: QCloseEvent) -> None:
         self.sound.stop()
         self.close()
 
