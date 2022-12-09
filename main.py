@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        # to be able to drag the window
+        # TO BE ABLE TO DRAG THE WINDOW
         self._old_pos = None
 
         self.circle_bg = QFrame(self.container)

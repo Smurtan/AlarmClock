@@ -1,9 +1,5 @@
-
-
-
-
 .circle_bg {
-    background-color: #282a36;
+    background-color: #1a8f3e;
     border-radius: 310px;
 }
 
@@ -32,9 +28,4 @@
 .alarm_clocks_scroll_area {
     border: none;
     background-color: rgba(0, 0, 0, 0);
-}
-
-.new_alarm_clock_button {
-    border-radius: 25px;
-    background-color: #cc2e2e;
 }
