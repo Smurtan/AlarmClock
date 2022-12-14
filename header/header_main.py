@@ -1,5 +1,5 @@
 from PyQt6.QtCore import *
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
 import sys
@@ -10,8 +10,15 @@ from header.button import PyCloseButton
 class Ui_Header:
     def __init__(self, parent):
         self.header = QFrame(parent)
-        self.header.setGeometry(QRect(0, 0, 620, 230))
+        self.header.setGeometry(QRect(0, 0, 620, 300))
         self.header.setProperty("class", "header")
+
+        #self.pixmap = QPixmap("header/image/night_sky.png")
+
+        #self.image = QLabel(self.header)
+        #self.image.setPixmap(self.pixmap)
+        #self.image.setGeometry(0, 0, 620, 300)
+        #self.image.setProperty("class", "header_image")
 
         self.close_button = PyCloseButton(self.header)
         self.close_button.setGeometry(137, 0, 340, 45)

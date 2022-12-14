@@ -54,6 +54,7 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_icon = QLabel(self._space_for_time)
         self._alarm_clock_icon.setPixmap(self._icon_day)
 
+        # изменять шрифт при выключении и включении
         self._alarm_clock_time = QLabel(time.toString("hh:mm"), self._space_for_time)
         self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
         self.time = time

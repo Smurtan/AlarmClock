@@ -1,8 +1,7 @@
 import sys
 
-from PyQt6 import QtGui
 from PyQt6.QtCore import QSize, QRect, Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QMouseEvent
 from PyQt6.QtWidgets import (
     QMainWindow, QApplication, QFrame, QLabel,
     QVBoxLayout, QScrollArea
@@ -28,8 +27,8 @@ class MainWindow(QMainWindow):
         self.circle_bg.setGeometry(QRect(0, 0, 620, 620))
         self.circle_bg.setProperty("class", "circle_bg")
 
-        self.body = Ui_Body(self.circle_bg)
         self.header = Ui_Header(self.circle_bg)
+        self.body = Ui_Body(self.circle_bg)
 
         # setting window size
         self.setFixedSize(QSize(620, 620))
@@ -37,15 +36,15 @@ class MainWindow(QMainWindow):
         # we install a frame with all the contents in the central widget
         self.setCentralWidget(self.container)
 
-    def mousePressEvent(self, event: QtGui.QMouseEvent) -> None:
+    def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
             self._old_pos = event.pos()
 
-    def mouseReleaseEvent(self, event: QtGui.QMouseEvent) -> None:
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
             self._old_pos = None
 
-    def mouseMoveEvent(self, event: QtGui.QMouseEvent) -> None:
+    def mouseMoveEvent(self, event: QMouseEvent) -> None:
         if not self._old_pos:
             return
         delta = event.pos() - self._old_pos
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     window = MainWindow()
-    with open("styles.css", "r") as file:
+    with open("styles.qss", "r") as file:
         app.setStyleSheet(file.read())
     window.show()
 

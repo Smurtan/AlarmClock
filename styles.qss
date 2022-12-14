@@ -1,10 +1,10 @@
 .circle_bg {
-    background-color: #1a8f3e;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0.6 #000025, stop: 1.0 #18054c);
     border-radius: 310px;
 }
 
 .header {
-    background: none;
+    border-radius: 50px;
 }
 
 .time_label {
@@ -12,7 +12,7 @@
 }
 
 .alarm_clock {
-    background: #fff5ff;
+    background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, y2: 0.55, stop: 0 #7a26c9, stop: 1.0 #b641e6);
     border-radius: 50%;
 }
 

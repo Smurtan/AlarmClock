@@ -9,7 +9,6 @@ class PyToggle(QCheckBox):
             self,
             width=60,
             bg_color="#777",
-            circle_color="#fefe22",
             active_color="#00BCff",
             animation_curve=QEasingCurve.Type.OutQuint
     ):
@@ -19,7 +18,6 @@ class PyToggle(QCheckBox):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self._bg_color = bg_color
-        self._circle_color = circle_color
         self._activate_color = active_color
 
         self._emoji_position = 0
