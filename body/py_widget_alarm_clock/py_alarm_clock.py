@@ -14,8 +14,10 @@ class PyAlarmClock(QWidget):
             list_alarm_clock,
             time=QTime.currentTime(),
             family_fonts="Segoe UI",
-            point_size=26,
+            point_size=30,
             color_font="#ffffff",
+            first_color_gradient_bg="#7a26c9",
+            second_color_gradient_bg="#b641e6",
             icon_day="icon_sun.png",
             icon_night="icon_moon.png",
             height_alarm_clock=100,
@@ -27,6 +29,9 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_area = alarm_clock_area
         self._height_alarm_clock = height_alarm_clock
 
+        self._first_color_gradient_bg = first_color_gradient_bg
+        self._second_color_gradient_bg = second_color_gradient_bg
+
         self._list_alarm_clock = list_alarm_clock
         self.serial_number = len(self._list_alarm_clock)
 
@@ -37,6 +42,7 @@ class PyAlarmClock(QWidget):
 
         self._font_alarm_clock_time_disable = QFont()
         self._font_alarm_clock_time_disable.setFamily(family_fonts)
+        self._font_alarm_clock_time_disable.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, 2)
         self._font_alarm_clock_time_disable.setPointSize(point_size)
 
         self._icon_day = QPixmap('body/image/' + icon_day)
@@ -49,21 +55,20 @@ class PyAlarmClock(QWidget):
 
         # CREAT THE AREA WITH THE ALARM TIME AND THE ICON, FOR LEFT ALIGNMENT
         self._space_for_time = QGroupBox(self.alarm_clock)
-        self._space_for_time.setFixedSize(190, 80)
+        self._space_for_time.setFixedSize(200, 80)
         self._space_for_time.setProperty("class", "space_for_time")
 
         self._alarm_clock_icon = QLabel(self._space_for_time)
         self._alarm_clock_icon.setPixmap(self._icon_day)
 
-        # изменять шрифт при выключении и включении
         self._alarm_clock_time = QLabel(self._space_for_time)
         self._alarm_clock_time.setText(time.toString("hh:mm"))
-        self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
         self._alarm_clock_time.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
         self._alarm_clock_time.setStyleSheet(f'color: {color_font}')
         self.time = time
 
         self.alarm_clock_toggle = PyToggle()
+        self.alarm_clock_toggle.clicked.connect(self.changeStyleAlarmClock)
 
         # ALIGN THE PICTURE AND THE TIME INSIDE THE BOX
         self._space_for_time_horizontal_layout = QHBoxLayout(self._space_for_time)
@@ -79,6 +84,8 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_horizontal_layout.addWidget(self.alarm_clock_toggle, alignment=Qt.AlignmentFlag.AlignRight)
 
         self.check_days_of_week = [False for i in range(7)]
+
+        self.changeStyleAlarmClock()
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -98,6 +105,17 @@ class PyAlarmClock(QWidget):
 
     def enableAlarmClock(self):
         self.alarm_clock_toggle.setChecked(1)
+        self.changeStyleAlarmClock()
+
+    def changeStyleAlarmClock(self):
+        if self.alarm_clock_toggle.isChecked():
+            self.alarm_clock.setStyleSheet(".alarm_clock {background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, "
+                                           "y2: 0.55, stop: 0 %s, stop: 1.0 %s)}" % (self._first_color_gradient_bg,
+                                                                                     self._second_color_gradient_bg))
+            self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
+        else:
+            self.alarm_clock.setStyleSheet(".alarm_clock {background-color: %s}" % self._first_color_gradient_bg)
+            self._alarm_clock_time.setFont(self._font_alarm_clock_time_disable)
 
     def checkTimeAlarmClock(self) -> bool:
         if self.time.minute() == QTime.currentTime().minute() and \

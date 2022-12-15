@@ -16,7 +16,6 @@
 }
 
 .alarm_clock {
-    background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, y2: 0.55, stop: 0 #7a26c9, stop: 1.0 #b641e6);
     border-radius: 50%;
 }
 
