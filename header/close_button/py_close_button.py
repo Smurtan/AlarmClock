@@ -32,6 +32,11 @@ class PyCloseButton(QPushButton):
 
         p.setPen(pen)
 
+        if self.underMouse():
+            p.setOpacity(1)
+        else:
+            p.setOpacity(0.3)
+
         p.setBrush(QColor(self._bg_color))
         p.drawChord(0, 2, 300, 140, 30 * 16, 120 * 16)
 
@@ -41,7 +46,6 @@ class PyCloseButton(QPushButton):
         font.setBold(True)
         p.setFont(font)
 
-
-        p.drawText(QPoint(118, 25), "Закрыть")
+        p.drawText(QPoint(116, 25), "Закрыть")
 
         p.end()

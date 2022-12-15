@@ -46,7 +46,7 @@ class Ui_Body:
         self.changingWidthAlarmClock(0)  # for the default alarm clock
 
         self.new_alarm_clock_button = PyAddButton(parent)
-        self.new_alarm_clock_button.setGeometry(160, 580, 300, 40)
+        self.new_alarm_clock_button.setGeometry(160, 572, 300, 40)
         self.new_alarm_clock_button.clicked.connect(self.addNewAlarmClock)
 
         self.timer_alarm_clock = QTimer()

@@ -8,7 +8,7 @@ class PyToggle(QCheckBox):
     def __init__(
             self,
             width=60,
-            bg_color="#777",
+            bg_color="#330ba2",
             active_color="#00BCff",
             animation_curve=QEasingCurve.Type.OutQuint
     ):

@@ -7,12 +7,9 @@ class PyAddButton(QPushButton):
     def __init__(
             self,
             parent=None,
-            width=302,
+            width=340,
             height=40,
-            bg_color="#29b078",
-            active_color="225D44FF",
-            plus_color="B02929FF",
-            plus_width=30
+            bg_color="#fed402"
     ):
         QPushButton.__init__(self, parent)
 
@@ -20,29 +17,32 @@ class PyAddButton(QPushButton):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self._bg_color = bg_color
-        self._active_color = active_color
-        self._plus_color = plus_color
-
-        self._plus_width = plus_width
 
     def paintEvent(self, a0: QPaintEvent) -> None:
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        p.setPen(Qt.PenStyle.NoPen)
+        pen = QPen(Qt.GlobalColor.white)
+        pen.setStyle(Qt.PenStyle.SolidLine)
+        pen.setWidth(1)
+
+        p.setPen(pen)
+
+        if self.underMouse():
+            p.setOpacity(1)
+        else:
+            p.setOpacity(0.6)
 
         p.setBrush(QColor(self._bg_color))
-        p.drawChord(-160, -580, 620, 620, -58 * 16, -64 * 16)
+        p.drawChord(0, -100, 300, 140, -30 * 16, -120 * 16)
 
-        p.setPen(Qt.PenStyle.SolidLine)
+        font = QFont()
+        font.setPixelSize(17)
+        font.setFamily("Segoe UI")
+        font.setBold(True)
+        p.setFont(font)
 
-        pen = QPen()
-        pen.setWidth(3)
-        p.setPen(pen)
-        p.setBrush(QColor(self._plus_color))
-        p.drawLine(QPoint(self.width() // 2 - self._plus_width // 2, 20),
-                   QPoint(self.width() // 2 + self._plus_width // 2, 20))
-        p.drawLine(QPoint(self.width() // 2, 20 - self._plus_width // 2),
-                   QPoint(self.width() // 2, 20 + self._plus_width // 2))
+        p.setPen(QPen(QPen(Qt.GlobalColor.black)))
+        p.drawText(QPoint(110, 25), "Добавить")
 
         p.end()

@@ -21,7 +21,7 @@ class Ui_Header:
         #self.image.setProperty("class", "header_image")
 
         self.close_button = PyCloseButton(self.header)
-        self.close_button.setGeometry(160, 10, 340, 45)
+        self.close_button.setGeometry(160, 8, 340, 45)
         self.close_button.clicked.connect(self.closeApp)
 
         self.font_time = QFont()

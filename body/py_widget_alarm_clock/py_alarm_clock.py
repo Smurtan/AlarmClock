@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QTime, QDate, QRect
-from PyQt6.QtGui import QFont, QPixmap
-from PyQt6.QtWidgets import QPushButton, QWidget, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt6.QtGui import QFont, QPixmap, QColor
+from PyQt6.QtWidgets import QPushButton, QWidget, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout, QGraphicsColorizeEffect
 
 from body.py_widget_alarm_clock.py_toggle import PyToggle
 from body.py_widget_alarm_clock.py_alarm_clock_setting import PyAlarmClockSetting
@@ -15,6 +15,7 @@ class PyAlarmClock(QWidget):
             time=QTime.currentTime(),
             family_fonts="Segoe UI",
             point_size=26,
+            color_font="#ffffff",
             icon_day="icon_sun.png",
             icon_night="icon_moon.png",
             height_alarm_clock=100,
@@ -48,15 +49,18 @@ class PyAlarmClock(QWidget):
 
         # CREAT THE AREA WITH THE ALARM TIME AND THE ICON, FOR LEFT ALIGNMENT
         self._space_for_time = QGroupBox(self.alarm_clock)
-        self._space_for_time.setFixedSize(170, 80)
+        self._space_for_time.setFixedSize(190, 80)
         self._space_for_time.setProperty("class", "space_for_time")
 
         self._alarm_clock_icon = QLabel(self._space_for_time)
         self._alarm_clock_icon.setPixmap(self._icon_day)
 
         # изменять шрифт при выключении и включении
-        self._alarm_clock_time = QLabel(time.toString("hh:mm"), self._space_for_time)
+        self._alarm_clock_time = QLabel(self._space_for_time)
+        self._alarm_clock_time.setText(time.toString("hh:mm"))
         self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
+        self._alarm_clock_time.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
+        self._alarm_clock_time.setStyleSheet(f'color: {color_font}')
         self.time = time
 
         self.alarm_clock_toggle = PyToggle()
@@ -64,6 +68,7 @@ class PyAlarmClock(QWidget):
         # ALIGN THE PICTURE AND THE TIME INSIDE THE BOX
         self._space_for_time_horizontal_layout = QHBoxLayout(self._space_for_time)
         self._space_for_time_horizontal_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self._space_for_time_horizontal_layout.setSpacing(20)
         self._space_for_time_horizontal_layout.addWidget(self._alarm_clock_icon)
         self._space_for_time_horizontal_layout.addWidget(self._alarm_clock_time)
 
