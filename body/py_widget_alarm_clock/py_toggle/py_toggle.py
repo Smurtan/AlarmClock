@@ -8,8 +8,7 @@ class PyToggle(QCheckBox):
     def __init__(
             self,
             width=60,
-            bg_color="#777",
-            circle_color="#fefe22",
+            bg_color="#330ba2",
             active_color="#00BCff",
             animation_curve=QEasingCurve.Type.OutQuint
     ):
@@ -19,7 +18,6 @@ class PyToggle(QCheckBox):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self._bg_color = bg_color
-        self._circle_color = circle_color
         self._activate_color = active_color
 
         self._emoji_position = 0
@@ -67,13 +65,13 @@ class PyToggle(QCheckBox):
             p.setBrush(QColor(self._bg_color))
             p.drawRoundedRect(0, 0, rect.width(), rect.height(), self.height() / 2, self.height() / 2)
 
-            p.setPen(Qt.PenStyle.DashLine)
+            p.setPen(Qt.PenStyle.SolidLine)
             p.drawText(QPoint(self._emoji_position, 21), "\U0001F634")  # emoticons in unicode
         else:
             p.setBrush(QColor(self._activate_color))
             p.drawRoundedRect(0, 0, rect.width(), rect.height(), self.height() / 2, self.height() / 2)
 
-            p.setPen(Qt.PenStyle.DashLine)
+            p.setPen(Qt.PenStyle.SolidLine)
             p.drawText(QPoint(self._emoji_position, 21), "\U0001F60A")  # emoticons in unicode
 
         p.end()

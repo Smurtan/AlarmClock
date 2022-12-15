@@ -1,7 +1,8 @@
+import os
+
 from PyQt6.QtCore import Qt, QRect, QTimer, QTime, QDate
 from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
                              QVBoxLayout)
-import vlc
 
 from body.py_widget_alarm_clock import PyAlarmClock
 from body.button import PyAddButton
@@ -45,13 +46,13 @@ class Ui_Body:
         self.changingWidthAlarmClock(0)  # for the default alarm clock
 
         self.new_alarm_clock_button = PyAddButton(parent)
-        self.new_alarm_clock_button.setGeometry(160, 580, 300, 40)
+        self.new_alarm_clock_button.setGeometry(160, 572, 300, 40)
         self.new_alarm_clock_button.clicked.connect(self.addNewAlarmClock)
 
         self.timer_alarm_clock = QTimer()
         self.timer_alarm_clock.timeout.connect(self.callingAlarmClock)
 
-        self.sound = vlc.MediaPlayer("songs.mp3")
+        self.list_songs = [file for file in os.listdir("Songs")]
 
         self.serial_number_nearest_alarm_clock = None
         self.determiningNextAlarmClock()
@@ -144,7 +145,7 @@ class Ui_Body:
 
     def callingAlarmClock(self):
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
-            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock], self.sound)
+            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock], self.list_songs[0])
             stop_widget.exec()
 
         self.determiningNextAlarmClock()

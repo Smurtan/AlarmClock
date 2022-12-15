@@ -3,13 +3,15 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 
 
-class PyAddButton(QPushButton):
+class PyCloseButton(QPushButton):
     def __init__(
             self,
             parent=None,
             width=340,
             height=40,
-            bg_color="#fed402"
+            bg_color="#bb2323",
+            active_color="225D44FF",
+            stroke_color="FFFFFF"
     ):
         QPushButton.__init__(self, parent)
 
@@ -17,6 +19,8 @@ class PyAddButton(QPushButton):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self._bg_color = bg_color
+        self._active_color = active_color
+        self._stroke_color = stroke_color
 
     def paintEvent(self, a0: QPaintEvent) -> None:
         p = QPainter(self)
@@ -31,10 +35,10 @@ class PyAddButton(QPushButton):
         if self.underMouse():
             p.setOpacity(1)
         else:
-            p.setOpacity(0.6)
+            p.setOpacity(0.3)
 
         p.setBrush(QColor(self._bg_color))
-        p.drawChord(0, -100, 300, 140, -30 * 16, -120 * 16)
+        p.drawChord(0, 2, 300, 140, 30 * 16, 120 * 16)
 
         font = QFont()
         font.setPixelSize(17)
@@ -42,7 +46,6 @@ class PyAddButton(QPushButton):
         font.setBold(True)
         p.setFont(font)
 
-        p.setPen(QPen(QPen(Qt.GlobalColor.black)))
-        p.drawText(QPoint(110, 25), "Добавить")
+        p.drawText(QPoint(116, 25), "Закрыть")
 
         p.end()

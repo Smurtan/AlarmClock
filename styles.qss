@@ -1,14 +1,14 @@
-
-
-
-
 .circle_bg {
-    background-color: #282a36;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #000025, stop: 1.0 #18054c);
     border-radius: 310px;
 }
 
 .header {
-    background: none;
+    border-radius: 50px;
+}
+
+.close_button {
+    color: rgba(0, 0, 0, 50);
 }
 
 .time_label {
@@ -16,7 +16,6 @@
 }
 
 .alarm_clock {
-    background: #fff5ff;
     border-radius: 50%;
 }
 
@@ -32,9 +31,4 @@
 .alarm_clocks_scroll_area {
     border: none;
     background-color: rgba(0, 0, 0, 0);
-}
-
-.new_alarm_clock_button {
-    border-radius: 25px;
-    background-color: #cc2e2e;
 }
