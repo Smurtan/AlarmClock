@@ -1,7 +1,10 @@
 import vlc
 
+from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
+
+from body.py_standard_button import PyStandardButton
 
 
 class PyAlarmClockStop(QDialog):
@@ -12,11 +15,14 @@ class PyAlarmClockStop(QDialog):
     ):
         super().__init__(alarm_clock)
 
-        self._alarm_clock = alarm_clock
-        self.sound = vlc.MediaPlayer("Songs/" + sound)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        self.stop_button = QPushButton()
-        self.stop_button.setText("Stop")
+        self._alarm_clock = alarm_clock
+        self.sound = vlc.MediaPlayer("Music/" + sound)
+
+        self.stop_button = PyStandardButton("STOP!", width=190, height=70, bg_color='#fed402', text_color='000',
+                                            point_size=50)
         self.stop_button.clicked.connect(self.closeEvent)
 
         try:

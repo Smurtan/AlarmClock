@@ -34,6 +34,7 @@ class PyAlarmClock(QWidget):
 
         self._list_alarm_clock = list_alarm_clock
         self.serial_number = len(self._list_alarm_clock)
+        self.music = None
 
         self._font_alarm_clock_time_enable = QFont()
         self._font_alarm_clock_time_enable.setFamily(family_fonts)
@@ -99,6 +100,9 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_time.setText(time.toString("hh:mm"))
         self.time = time
 
+    def setMusic(self, music, index_music):
+        self.music = {'music': music, 'index': index_music}
+
     def setDaysOfWeek(self, check_days: list) -> None:
         for day in range(7):
             self.check_days_of_week[day] = check_days[day].isChecked()
@@ -126,7 +130,8 @@ class PyAlarmClock(QWidget):
 
     def settingAlarmClock(self) -> int:
         setting_alarm_clock = PyAlarmClockSetting(self, selected_time=self.time,
-                                                  selected_days_of_week=self.check_days_of_week)
+                                                  selected_days_of_week=self.check_days_of_week,
+                                                  select_music=self.music)
         return setting_alarm_clock.exec()
 
     def clicked(self):
