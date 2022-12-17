@@ -3,8 +3,7 @@ import sys
 from PyQt6.QtCore import QSize, QRect, Qt
 from PyQt6.QtGui import QMouseEvent
 from PyQt6.QtWidgets import (
-    QMainWindow, QApplication, QFrame, QLabel,
-    QVBoxLayout, QScrollArea
+    QMainWindow, QApplication, QFrame, QStyleFactory
 )
 
 from header import Ui_Header
@@ -53,6 +52,7 @@ class MainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create('Fusion'))
 
     window = MainWindow()
     with open("styles.qss", "r") as file:

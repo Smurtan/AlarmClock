@@ -1,11 +1,9 @@
-import os
-
 from PyQt6.QtCore import Qt, QRect, QTimer, QTime, QDate
 from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
                              QVBoxLayout)
 
 from body.py_widget_alarm_clock import PyAlarmClock
-from body.button import PyAddButton
+from body.custom_button import PyAddButton
 from body.py_widget_alarm_clock.py_alarm_clock_stop import PyAlarmClockStop
 
 
@@ -51,8 +49,6 @@ class Ui_Body:
 
         self.timer_alarm_clock = QTimer()
         self.timer_alarm_clock.timeout.connect(self.callingAlarmClock)
-
-        self.list_songs = [file for file in os.listdir("Songs")]
 
         self.serial_number_nearest_alarm_clock = None
         self.determiningNextAlarmClock()
@@ -145,7 +141,8 @@ class Ui_Body:
 
     def callingAlarmClock(self):
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
-            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock], self.list_songs[0])
+            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock],
+                                           self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music['music'])
             stop_widget.exec()
 
         self.determiningNextAlarmClock()
