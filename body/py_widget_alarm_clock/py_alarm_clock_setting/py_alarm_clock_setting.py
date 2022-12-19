@@ -21,6 +21,8 @@ class PyAlarmClockSetting(QDialog):
     ):
         super().__init__(alarm_clock)
 
+        self.move(alarm_clock.window().pos().x() + 50, alarm_clock.window().pos().y() + 120)
+
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
@@ -112,7 +114,7 @@ class PyAlarmClockSetting(QDialog):
         self.setLayout(self.layout)
 
     def acceptSetting(self) -> None:
-        self._alarm_clock.setTime(self.time_alarm_clock_setting.time())
+        self._alarm_clock.setTimeAndIcon(self.time_alarm_clock_setting.time())
         self._alarm_clock.setMusic(self.list_music[self.music_combo.currentIndex()], self.music_combo.currentIndex())
         self._alarm_clock.enableAlarmClock()
         self._alarm_clock.setDaysOfWeek(self.checkbox_days)

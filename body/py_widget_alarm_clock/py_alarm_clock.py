@@ -61,13 +61,13 @@ class PyAlarmClock(QWidget):
         self._space_for_time.setProperty("class", "space_for_time")
 
         self._alarm_clock_icon = QLabel(self._space_for_time)
-        self._alarm_clock_icon.setPixmap(self._icon_day)
 
         self._alarm_clock_time = QLabel(self._space_for_time)
-        self._alarm_clock_time.setText(time.toString("hh:mm"))
         self._alarm_clock_time.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
         self._alarm_clock_time.setStyleSheet(f'color: {color_font}')
         self.time = time
+
+        self.setTimeAndIcon(time)
 
         self.alarm_clock_toggle = PyToggle()
         self.alarm_clock_toggle.clicked.connect(self.changeAlarmClockStatusStyle)
@@ -97,9 +97,13 @@ class PyAlarmClock(QWidget):
     def setMinimumSize(self, minw: int, minh: int) -> None:
         self.alarm_clock.setMinimumSize(minw, minh)
 
-    def setTime(self, time: QTime):
+    def setTimeAndIcon(self, time: QTime):
         self._alarm_clock_time.setText(time.toString("hh:mm"))
         self.time = time
+        if QTime(5, 0) < time < QTime(18, 0):
+            self._alarm_clock_icon.setPixmap(self._icon_day)
+        else:
+            self._alarm_clock_icon.setPixmap(self._icon_night)
 
     def setMusic(self, music, index_music):
         self.music = {'music': music, 'index': index_music}
@@ -153,3 +157,9 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_area.setGeometry(QRect(0, 0, 620, self._alarm_clock_area.height() - self._height_alarm_clock))
         for sequence_number in range(self.serial_number, len(self._list_alarm_clock)):
             self._list_alarm_clock[sequence_number].serial_number = sequence_number
+        now_scroll = self.body.last_scroll // 60 * 60
+        if not now_scroll:
+            self.body.changingWidthAlarmClock(0)
+        else:
+            self.body.alarm_clocks_scroll_area.verticalScrollBar().setValue(self.body.last_scroll // 60 * 60)
+

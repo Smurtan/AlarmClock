@@ -75,7 +75,7 @@ class Ui_Body:
                                                         alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
             # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
-            self.changingWidthAlarmClock(0)
+            self.changingWidthAlarmClock(self.last_scroll // 60 * 60)
             self.determiningNextAlarmClock()
 
     def determiningDirectionScrolling(self, scrolled_pixels: int) -> int:
