@@ -13,6 +13,8 @@ class PyAlarmClock(QWidget):
             alarm_clock_area,
             list_alarm_clock,
             time=QTime.currentTime(),
+            check_days_of_week=None,
+            music=None,
             family_fonts="Segoe UI",
             point_size=30,
             color_font="#ffffff",
@@ -35,7 +37,7 @@ class PyAlarmClock(QWidget):
 
         self._list_alarm_clock = list_alarm_clock
         self.serial_number = len(self._list_alarm_clock)
-        self.music = None
+        self.music = music
 
         self._font_alarm_clock_time_enable = QFont()
         self._font_alarm_clock_time_enable.setFamily(family_fonts)
@@ -85,7 +87,10 @@ class PyAlarmClock(QWidget):
         self._alarm_clock_horizontal_layout.addWidget(self._space_for_time, alignment=Qt.AlignmentFlag.AlignLeft)
         self._alarm_clock_horizontal_layout.addWidget(self.alarm_clock_toggle, alignment=Qt.AlignmentFlag.AlignRight)
 
-        self.check_days_of_week = [False for i in range(7)]
+        if check_days_of_week is None:
+            self.check_days_of_week = [False for i in range(7)]
+        else:
+            self.check_days_of_week = check_days_of_week
 
         self.changeAlarmClockStatusStyle()
 
@@ -137,8 +142,7 @@ class PyAlarmClock(QWidget):
         if self.time.minute() == QTime.currentTime().minute() and \
                 self.check_days_of_week[QDate.currentDate().dayOfWeek() - 1] and self.alarm_clock_toggle.isChecked():
             return True
-        else:
-            return False
+        return False
 
     def settingAlarmClock(self) -> int:
         setting_alarm_clock = PyAlarmClockSetting(self, selected_time=self.time,

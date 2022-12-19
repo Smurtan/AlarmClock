@@ -1,3 +1,5 @@
+import pickle
+
 from PyQt6.QtCore import Qt, QRect, QTimer, QTime, QDate
 from PyQt6.QtWidgets import (QWidget, QFrame, QScrollArea,
                              QVBoxLayout)
@@ -26,17 +28,31 @@ class Ui_Body:
         self.alarm_clocks_scroll_area.setProperty("class", "alarm_clocks_scroll_area")
         self.alarm_clocks_scroll_area.setWidget(self.alarm_clocks_area)
 
-        # SO HAVE 1 ALARM CLOCK BY DEFAULT
-        # self.default_alarm_clock = PyAlarmClock(self.alarm_clocks_area, height_alarm_clock=self.height_alarm_clock)
-
         self.vertical_layout_alarm_clocks = QVBoxLayout(self.alarm_clocks_area)
         self.vertical_layout_alarm_clocks.setContentsMargins(0, 0, 0, 0)
         self.vertical_layout_alarm_clocks.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.vertical_layout_alarm_clocks.setSpacing(self.spacing_alarm_clock)
-        # self.vertical_layout_alarm_clocks.addWidget(self.default_alarm_clock, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         # INITIALIZATION OF CREATED ALARMS
-        self.list_alarm_clocks = []  # self.default_alarm_clock]
+        self.list_alarm_clocks = []
+        try:
+            with open("appdata", "rb") as appdata:
+                self.list_data_alarm_clock = pickle.load(appdata)
+                for alarm_clock in range(len(self.list_data_alarm_clock)):
+                    self.list_alarm_clocks.append(PyAlarmClock(
+                        self,
+                        self.alarm_clocks_area,
+                        self.list_alarm_clocks,
+                        self.list_data_alarm_clock[alarm_clock]['time'],
+                        self.list_data_alarm_clock[alarm_clock]['check_days_of_week'],
+                        self.list_data_alarm_clock[alarm_clock]['music'],
+                        height_alarm_clock=self.height_alarm_clock,
+                        color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],
+                        color_alarm_clock_setting_gradient=self.design_style[self.time_of_day]['alarm_clock_setting'][
+                            'bg_color']
+                    ))
+        except (FileNotFoundError, EOFError):
+            print('Вы потеряли файл с данными!')
 
         # SETTING PARAMETERS FOR THE IMPLEMENTATION OF CHANGING THE SIZE OF ALARMS
         self.scroll_value = 0
