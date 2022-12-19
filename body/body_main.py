@@ -8,7 +8,10 @@ from body.py_widget_alarm_clock.py_alarm_clock_stop import PyAlarmClockStop
 
 
 class Ui_Body:
-    def __init__(self, parent: QWidget):
+    def __init__(self, parent: QWidget, design_style=None):
+        self.design_style = design_style
+        self.time_of_day = 'night'
+
         self.height_alarm_clock = 100
         self.spacing_alarm_clock = 20
 
@@ -55,7 +58,11 @@ class Ui_Body:
 
     def addNewAlarmClock(self) -> None:
         new_alarm_clock = PyAlarmClock(self, self.alarm_clocks_area, self.list_alarm_clocks,
-                                       height_alarm_clock=self.height_alarm_clock)
+                                       height_alarm_clock=self.height_alarm_clock,
+                                       color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],
+                                       color_alarm_clock_setting_gradient=
+                                       self.design_style[self.time_of_day]['alarm_clock_setting']['bg_color']
+                                       )
         self.list_alarm_clocks.append(new_alarm_clock)
 
         # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
@@ -142,7 +149,13 @@ class Ui_Body:
     def callingAlarmClock(self):
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
             stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock],
-                                           self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music['music'])
+                                           self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music[
+                                               'music'])
             stop_widget.exec()
 
         self.determiningNextAlarmClock()
+
+    def changeStyleBody(self, time_of_day):
+        self.time_of_day = time_of_day
+        for alarm_clock in self.list_alarm_clocks:
+            alarm_clock.changeStyleAlarmClock(time_of_day)
