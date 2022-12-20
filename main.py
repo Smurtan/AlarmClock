@@ -1,3 +1,4 @@
+import pickle
 import sys
 
 from PyQt6.QtCore import QSize, QRect, Qt, QTime, QTimer
@@ -76,7 +77,7 @@ class MainWindow(QMainWindow):
         self.circle_bg.setStyleSheet(".circle_bg {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
                                      "stop: 0 %s, stop: 1.0 %s)}" % ('#000025', '#18054c'))
 
-        self.header = Ui_Header(self.circle_bg)
+        self.header = Ui_Header(self, self.circle_bg)
         self.body = Ui_Body(self.circle_bg, self.design_style)
 
         self.timer_change_style = QTimer()
@@ -130,6 +131,23 @@ class MainWindow(QMainWindow):
 
         self.body.changeStyleBody(time_of_day)
 
+    def savingData(self):
+        data_file = []
+        with open("appdata", "wb") as appdata:
+            for alarm_clock in self.body.list_alarm_clocks:
+                data_alarm_clock = {
+                    'time': alarm_clock.time,
+                    'check_days_of_week': alarm_clock.check_days_of_week,
+                    'music': alarm_clock.music,
+                    'condition_toggle': alarm_clock.alarm_clock_toggle.isChecked()
+                }
+                data_file.append(data_alarm_clock)
+            pickle.dump(data_file, appdata)
+
+    def close(self):
+        self.savingData()
+        sys.exit()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -139,5 +157,4 @@ if __name__ == '__main__':
     with open("styles.qss", "r") as file:
         app.setStyleSheet(file.read())
     window.show()
-
     app.exec()

@@ -8,21 +8,16 @@ from header.close_button import PyCloseButton
 
 
 class Ui_Header:
-    def __init__(self, parent):
+    def __init__(self, MainWindow, parent):
+        self._MainWindow = MainWindow
+
         self.header = QFrame(parent)
         self.header.setGeometry(QRect(0, 0, 620, 300))
         self.header.setProperty("class", "header")
 
-        #self.pixmap = QPixmap("header/image/night_sky.png")
-
-        #self.image = QLabel(self.header)
-        #self.image.setPixmap(self.pixmap)
-        #self.image.setGeometry(0, 0, 620, 300)
-        #self.image.setProperty("class", "header_image")
-
         self.close_button = PyCloseButton(self.header)
         self.close_button.setGeometry(160, 8, 340, 45)
-        self.close_button.clicked.connect(self.closeApp)
+        self.close_button.clicked.connect(self.close)
 
         self.font_time = QFont()
         self.font_time.setFamily("Segoe UI")
@@ -43,5 +38,5 @@ class Ui_Header:
     def updateCurrentTime(self):
         self.time_label.setText(QDateTime.currentDateTime().toString("hh:mm"))
 
-    def closeApp(self):
-        sys.exit()
+    def close(self):
+        self._MainWindow.close()
