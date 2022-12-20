@@ -46,11 +46,14 @@ class Ui_Body:
                         self.list_data_alarm_clock[alarm_clock]['time'],
                         self.list_data_alarm_clock[alarm_clock]['check_days_of_week'],
                         self.list_data_alarm_clock[alarm_clock]['music'],
+                        self.list_data_alarm_clock[alarm_clock]['condition_toggle'],
                         height_alarm_clock=self.height_alarm_clock,
                         color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],
                         color_alarm_clock_setting_gradient=self.design_style[self.time_of_day]['alarm_clock_setting'][
                             'bg_color']
                     ))
+                    self.vertical_layout_alarm_clocks.addWidget(self.list_alarm_clocks[-1],
+                                                                alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         except (FileNotFoundError, EOFError):
             print('Вы потеряли файл с данными!')
 
@@ -61,6 +64,7 @@ class Ui_Body:
         self.alarm_clocks_scroll_area.verticalScrollBar().valueChanged.connect(self.changingWidthAlarmClock)
 
         self.changingWidthAlarmClock(0)  # for the default alarm clock
+        self.changeHeightAlarmClockArea()
 
         self.new_alarm_clock_button = PyAddButton(parent)
         self.new_alarm_clock_button.setGeometry(160, 572, 300, 40)
@@ -73,6 +77,7 @@ class Ui_Body:
         self.determiningNextAlarmClock()
 
     def addNewAlarmClock(self) -> None:
+        # в добавление будильника из файла вписать различные мелочи
         new_alarm_clock = PyAlarmClock(self, self.alarm_clocks_area, self.list_alarm_clocks,
                                        height_alarm_clock=self.height_alarm_clock,
                                        color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],

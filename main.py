@@ -138,7 +138,8 @@ class MainWindow(QMainWindow):
                 data_alarm_clock = {
                     'time': alarm_clock.time,
                     'check_days_of_week': alarm_clock.check_days_of_week,
-                    'music': alarm_clock.music
+                    'music': alarm_clock.music,
+                    'condition_toggle': alarm_clock.alarm_clock_toggle.isChecked()
                 }
                 data_file.append(data_alarm_clock)
             pickle.dump(data_file, appdata)

@@ -15,6 +15,7 @@ class PyAlarmClock(QWidget):
             time=QTime.currentTime(),
             check_days_of_week=None,
             music=None,
+            condition_toggle=True,
             family_fonts="Segoe UI",
             point_size=30,
             color_font="#ffffff",
@@ -72,6 +73,7 @@ class PyAlarmClock(QWidget):
         self.setTimeAndIcon(time)
 
         self.alarm_clock_toggle = PyToggle()
+        self.alarm_clock_toggle.setChecked(condition_toggle)
         self.alarm_clock_toggle.clicked.connect(self.changeAlarmClockStatusStyle)
 
         # ALIGN THE PICTURE AND THE TIME INSIDE THE BOX

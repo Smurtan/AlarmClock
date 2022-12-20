@@ -54,7 +54,7 @@ class PyAlarmClockSetting(QDialog):
 
         self.checkbox_days = []
         for day in [('Пн', '#fff'), ('Вт', '#fff'), ('Ср', '#fff'), ('Чт', '#fff'),
-                    ('Пт', '#fff'), ('Сб', '#fff'), ('Вс', '#f30e0e')]:
+                    ('Пт', '#fff'), ('Сб', '#fff'), ('Вс', '#ffffff')]:
             self.checkbox_days.append(PyCheckBoxDay(day[0], self.area_days_of_week, circle_color='#d4ae17',
                                                     text_color=day[1], active_text_color='#d4ae17'))
             self.horizontal_days_of_week_layout.addWidget(self.checkbox_days[-1])
@@ -94,7 +94,7 @@ class PyAlarmClockSetting(QDialog):
         self.horizontal_layout_control_button.addWidget(self.button_Cancel)
 
         self.button_Delete = PyStandardButton("Delete", width=92, height=25, bg_color="#8a56bc",
-                                              text_color="#ea1b1b", point_size=18)
+                                              text_color="#ffffff", point_size=18)
         self.button_Delete.clicked.connect(self.removeAlarmClock)
 
         self.button_horizontal_layout = QHBoxLayout(self.button_box)
