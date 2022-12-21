@@ -1,16 +1,16 @@
 from PyQt6.QtCore import (Qt, QRect, QPoint, QEasingCurve,
                           QPropertyAnimation, pyqtProperty)
-from PyQt6.QtGui import QPainter, QColor
+from PyQt6.QtGui import QPainter, QColor, QPaintEvent
 from PyQt6.QtWidgets import QCheckBox
 
 
 class PyToggle(QCheckBox):
     def __init__(
             self,
-            width=60,
-            bg_color="#330ba2",
-            active_color="#00BCff",
-            animation_curve=QEasingCurve.Type.OutQuint
+            width: int = 60,
+            bg_color: str = "#330ba2",
+            active_color: str = "#00BCff",
+            animation_curve: QEasingCurve = QEasingCurve.Type.OutQuint
     ):
         QCheckBox.__init__(self)
 
@@ -48,13 +48,12 @@ class PyToggle(QCheckBox):
         return self.contentsRect().contains(pos)
 
     # DRAW NEW ITEMS
-    def paintEvent(self, e):
+    def paintEvent(self, event: QPaintEvent):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
 
         p.setPen(Qt.PenStyle.NoPen)
 
-        # CHANGING THE FONT FOR EMOTICONS
         font = p.font()
         font.setPixelSize(20)
         p.setFont(font)

@@ -90,7 +90,7 @@ class Ui_Body:
         self.changeHeightAlarmClockArea()
 
         # THE ALARM WILL BE ADDED IF THE USER CLICKS OK
-        if new_alarm_clock.settingAlarmClock():
+        if new_alarm_clock.openingAlarmClockSettingWindow():
             # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
             self.vertical_layout_alarm_clocks.addWidget(new_alarm_clock,
                                                         alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
@@ -169,9 +169,7 @@ class Ui_Body:
 
     def callingAlarmClock(self):
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
-            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock],
-                                           self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music[
-                                               'music'])
+            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music['music'])
             stop_widget.exec()
 
         self.determiningNextAlarmClock()
