@@ -10,10 +10,15 @@ from body.py_widget_alarm_clock.py_alarm_clock_stop import PyAlarmClockStop
 
 
 class Ui_Body:
-    def __init__(self, parent: QWidget, design_style=None):
+    def __init__(
+            self,
+            parent: QWidget,
+            design_style: dict = None
+    ):
         self.design_style = design_style
-        self.time_of_day = 'night'
+        self.time_of_day = 'night'  # standard
 
+        # перенести в .ini
         self.height_alarm_clock = 100
         self.spacing_alarm_clock = 20
 
@@ -52,6 +57,7 @@ class Ui_Body:
                         color_alarm_clock_setting_gradient=self.design_style[self.time_of_day]['alarm_clock_setting'][
                             'bg_color']
                     ))
+                    # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
                     self.vertical_layout_alarm_clocks.addWidget(self.list_alarm_clocks[-1],
                                                                 alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         except (FileNotFoundError, EOFError):
@@ -63,21 +69,42 @@ class Ui_Body:
         self.last_count_alarm_clocks = 0
         self.alarm_clocks_scroll_area.verticalScrollBar().valueChanged.connect(self.changingWidthAlarmClock)
 
-        self.changingWidthAlarmClock(0)  # for the default alarm clock
+        # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
+        self.changingWidthAlarmClock(0)
+        # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
         self.changeHeightAlarmClockArea()
 
         self.new_alarm_clock_button = PyAddButton(parent)
         self.new_alarm_clock_button.setGeometry(160, 572, 300, 40)
         self.new_alarm_clock_button.clicked.connect(self.addNewAlarmClock)
 
-        self.timer_alarm_clock = QTimer()
-        self.timer_alarm_clock.timeout.connect(self.callingAlarmClock)
+        self.timer_next_alarm_clock = QTimer()
+        self.timer_next_alarm_clock.timeout.connect(self.callingAlarmClock)
 
         self.serial_number_nearest_alarm_clock = None
         self.determiningNextAlarmClock()
 
+    def changeHeightAlarmClockArea(self) -> None:
+        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
+                self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
+
+    def determiningNextAlarmClock(self) -> None:
+        time_to_nearest_alarm_clock = 24 * 60 * 60
+        current_day_of_week = QDate.currentDate().dayOfWeek() - 1
+
+        for alarm_clock in self.list_alarm_clocks:
+            if alarm_clock.check_days_of_week[current_day_of_week]:
+                time_to_alarm_clock = QTime.secsTo(QTime.currentTime(), alarm_clock.time)
+                if (0 < time_to_alarm_clock < time_to_nearest_alarm_clock and
+                        QTime.currentTime().minute() != alarm_clock.time.minute()):
+                    # to make the alarm clock sing at the beginning of the desired minute
+                    time_to_nearest_alarm_clock = time_to_alarm_clock // 60 + (60 - QTime.currentTime().second())
+                    self.serial_number_nearest_alarm_clock = alarm_clock.serial_number
+
+        self.timer_next_alarm_clock.setInterval(time_to_nearest_alarm_clock * 1000)  # time in millisecond
+        self.timer_next_alarm_clock.start()
+
     def addNewAlarmClock(self) -> None:
-        # в добавление будильника из файла вписать различные мелочи
         new_alarm_clock = PyAlarmClock(self, self.alarm_clocks_area, self.list_alarm_clocks,
                                        height_alarm_clock=self.height_alarm_clock,
                                        color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],
@@ -86,16 +113,13 @@ class Ui_Body:
                                        )
         self.list_alarm_clocks.append(new_alarm_clock)
 
-        # THE WIDTH OF THE AREA ADJUSTS TO THE NUMBER OF ALARM CLOCKS
         self.changeHeightAlarmClockArea()
 
         # THE ALARM WILL BE ADDED IF THE USER CLICKS OK
         if new_alarm_clock.openingAlarmClockSettingWindow():
-            # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
             self.vertical_layout_alarm_clocks.addWidget(new_alarm_clock,
                                                         alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
-            # AUTOMATICALLY CHANGE THE WIDTH OF ALL ALARM CLOCKS
             self.changingWidthAlarmClock(self.last_scroll // 60 * 60)
             self.determiningNextAlarmClock()
 
@@ -105,11 +129,8 @@ class Ui_Body:
         else:
             return 0  # up
 
-    def changeHeightAlarmClockArea(self):
-        self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, (len(self.list_alarm_clocks) - 1) * (
-                self.height_alarm_clock + self.spacing_alarm_clock) + self.height_alarm_clock))
-
-    def changeVisibleAlarmClocks(self, count_alarm_clocks, first_visible_alarm_clock, scroll_direction):
+    def changeVisibleAlarmClocks(self, count_alarm_clocks: int, first_visible_alarm_clock: int,
+                                 scroll_direction: int) -> None:
         # +4 TO THE FIRST VISIBLE ALARM CLOCK HELPS TO DETERMINE WHEN 4 ALARMS ARE VISIBLE IN THE FIELD
         if count_alarm_clocks >= first_visible_alarm_clock + 4:
             self.visible_alarm_clock = self.list_alarm_clocks[first_visible_alarm_clock + scroll_direction:
@@ -150,31 +171,17 @@ class Ui_Body:
         except IndexError:
             pass
 
-    def determiningNextAlarmClock(self):
-        # выходит, если был удалён выбранный будильник
-        # не обновляется после изменения будильника
-        time_to_nearest_alarm_clock = 24 * 60 * 60
-        current_day_of_week = QDate.currentDate().dayOfWeek() - 1
-        for alarm_clock in self.list_alarm_clocks:
-            if alarm_clock.check_days_of_week[current_day_of_week]:
-                time_to_alarm_clock = QTime.secsTo(QTime.currentTime(), alarm_clock.time)
-                if (0 < time_to_alarm_clock < time_to_nearest_alarm_clock and
-                        QTime.currentTime().minute() != alarm_clock.time.minute()):
-                    # to make the alarm clock sing at the beginning of the desired minute
-                    time_to_nearest_alarm_clock = time_to_alarm_clock // 60 + (60 - QTime.currentTime().second())
-                    self.serial_number_nearest_alarm_clock = alarm_clock.serial_number
-
-        self.timer_alarm_clock.setInterval(time_to_nearest_alarm_clock * 1000)  # time in millisecond
-        self.timer_alarm_clock.start()
-
-    def callingAlarmClock(self):
+    def callingAlarmClock(self) -> None:
+        # после пересохранения не работает
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
-            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music['music'])
+            stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock],
+                                           self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music[
+                                               'music'])
             stop_widget.exec()
 
         self.determiningNextAlarmClock()
 
-    def changeStyleBody(self, time_of_day):
+    def changeStyleBody(self, time_of_day: str) -> None:
         self.time_of_day = time_of_day
         for alarm_clock in self.list_alarm_clocks:
             alarm_clock.changeStyleAlarmClock(time_of_day)

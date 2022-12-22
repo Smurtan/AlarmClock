@@ -34,7 +34,7 @@ class PyAlarmClock(QWidget):
 
         self._first_color_gradient_bg, self._second_color_gradient_bg = color_gradient_bg
 
-        self.first_color_alarm_clock_setting_gradient, self.second_color_alarm_clock_setting_gradient = color_alarm_clock_setting_gradient
+        self.color_gradient_alarm_clock_setting = color_alarm_clock_setting_gradient
 
         self._list_alarm_clock = list_alarm_clock
         self.serial_number = len(self._list_alarm_clock)
@@ -137,8 +137,7 @@ class PyAlarmClock(QWidget):
     def changeStyleAlarmClock(self, time_of_day: str) -> None:
         self._first_color_gradient_bg, self._second_color_gradient_bg = self.body.design_style[time_of_day][
             'alarm_clock']
-        self.first_color_alarm_clock_setting_gradient, self.second_color_alarm_clock_setting_gradient = \
-            self.body.design_style[time_of_day]['alarm_clock_setting']['bg_color']
+        self.color_gradient_alarm_clock_setting = self.body.design_style[time_of_day]['alarm_clock_setting']['bg_color']
         self.changeAlarmClockStatusStyle()
 
     def checkTimeAlarmClock(self) -> bool:
@@ -151,8 +150,7 @@ class PyAlarmClock(QWidget):
         setting_alarm_clock = PyAlarmClockSetting(self, selected_time=self.time,
                                                   selected_days_of_week=self.check_days_of_week,
                                                   select_music=self.music,
-                                                  first_color_bg_gradient=self.first_color_alarm_clock_setting_gradient,
-                                                  second_color_bg_gradient=self.second_color_alarm_clock_setting_gradient)
+                                                  bg_color_gradient=self.color_gradient_alarm_clock_setting)
         return setting_alarm_clock.exec()
 
     def clicked(self) -> None:
@@ -161,11 +159,13 @@ class PyAlarmClock(QWidget):
     def removeAlarmClock(self) -> None:
         self._list_alarm_clock[self.serial_number].deleteLater()
         self._list_alarm_clock.pop(self.serial_number)
-        self.body.changeHeightAlarmClockArea()
         for sequence_number in range(self.serial_number, len(self._list_alarm_clock)):
             self._list_alarm_clock[sequence_number].serial_number = sequence_number
         now_scroll = self.body.last_scroll // 60 * 60
+
+        self.body.changeHeightAlarmClockArea()
         if not now_scroll:
             self.body.changingWidthAlarmClock(0)
         else:
             self.body.alarm_clocks_scroll_area.verticalScrollBar().setValue(self.body.last_scroll // 60 * 60)
+        self.body.determiningNextAlarmClock()

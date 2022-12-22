@@ -1,20 +1,20 @@
 import vlc
 import winsound
 
-from PyQt6.QtCore import *
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QCloseEvent
+from PyQt6.QtWidgets import QWidget, QDialog, QVBoxLayout
 
 from body.py_standard_button import PyStandardButton
-from body.py_widget_alarm_clock import PyAlarmClock
 
 
 class PyAlarmClockStop(QDialog):
     def __init__(
             self,
+            parent: QWidget,
             sound: str = None
     ):
-        super().__init__()
+        super().__init__(parent)
 
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -38,10 +38,3 @@ class PyAlarmClockStop(QDialog):
     def closeEvent(self, a0: QCloseEvent) -> None:
         self._sound.stop()
         self.close()
-
-
-if __name__ == '__main__':
-    app = QApplication([])
-    window = PyAlarmClockStop()
-    window.show()
-    app.exec()

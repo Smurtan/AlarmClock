@@ -1,15 +1,15 @@
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtGui import QPainter, QPen, QPaintEvent, QFont, QColor
+from PyQt6.QtWidgets import QWidget, QPushButton
 
 
 class PyAddButton(QPushButton):
     def __init__(
             self,
-            parent=None,
-            width=340,
-            height=40,
-            bg_color="#fed402"
+            parent: QWidget = None,
+            width: int = 340,
+            height: int = 40,
+            bg_color: str = "#fed402"
     ):
         QPushButton.__init__(self, parent)
 
