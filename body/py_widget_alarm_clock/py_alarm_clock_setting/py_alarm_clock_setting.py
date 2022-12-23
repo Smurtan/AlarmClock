@@ -1,8 +1,9 @@
 import os
 
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt, QTime, QDate
+from PyQt6.QtWidgets import (QDialog, QFrame, QLabel, QTimeEdit,
+                             QHBoxLayout, QComboBox, QVBoxLayout)
 
 from body.py_standard_button import PyStandardButton
 from body.py_widget_alarm_clock.py_alarm_clock_setting.py_checkbox_day import PyCheckBoxDay
@@ -12,15 +13,18 @@ class PyAlarmClockSetting(QDialog):
     def __init__(
             self,
             alarm_clock,
-            selected_time=QTime.currentTime(),
-            selected_days_of_week=None,
+            selected_time: QTime = QTime.currentTime(),
+            selected_days_of_week: list = None,
             select_music: dict = None,
-            first_color_bg_gradient='#220240',
-            second_color_bg_gradient='#45206a',
-            color_label='#ffffff'
+            bg_color_gradient: tuple = ('#220240', '#45206a'),
+            color_label: str = '#ffffff',
+            family_label: str = "Segoe UI",
+            size_label: int = 22,
+            color_days_of_week: str = "#ffffff"
     ):
         super().__init__(alarm_clock)
 
+        # The window is shifted from the upper left corner to the center
         self.move(alarm_clock.window().pos().x() + 50, alarm_clock.window().pos().y() + 120)
 
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
@@ -31,32 +35,37 @@ class PyAlarmClockSetting(QDialog):
         self.container.setProperty("class", "alarm_clock_setting")
         self.container.setStyleSheet(
             ".alarm_clock_setting {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-            "stop: 0 %s, stop: 1.0 %s)}" % (first_color_bg_gradient, second_color_bg_gradient))
+            "stop: 0 %s, stop: 1.0 %s)}" % (bg_color_gradient[0], bg_color_gradient[1]))
 
         if selected_days_of_week is None:
-            selected_days_of_week = [False for i in range(7)]
+            self._selected_days_of_week = [False for i in range(7)]
+        else:
+            self._selected_days_of_week = selected_days_of_week
 
-        self._alarm_clock = alarm_clock
-        self._selected_days_of_week = selected_days_of_week
+        self.alarm_clock = alarm_clock
 
         self.time_alarm_clock_label = QLabel("Когда вы хотите меня услышать?")
-        self.time_alarm_clock_label.setFont(QFont("Segoe UI", 22))
+        self.time_alarm_clock_label.setFont(QFont(family_label, size_label))
         self.time_alarm_clock_label.setStyleSheet(f'color: {color_label}')
+
+        self.font_time_alarm_clock_setting = QFont()
+        self.font_time_alarm_clock_setting.setFamily(family_label)
+        self.font_time_alarm_clock_setting.setPointSize(size_label - 6)
 
         self.time_alarm_clock_setting = QTimeEdit()
         self.time_alarm_clock_setting.setTime(selected_time)
         self.time_alarm_clock_setting.setMinimumSize(90, 40)
+        self.time_alarm_clock_setting.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.time_alarm_clock_setting.setFont(self.font_time_alarm_clock_setting)
 
-        # DAYS OF WEEK
         self.area_days_of_week = QFrame()
 
         self.horizontal_days_of_week_layout = QHBoxLayout(self.area_days_of_week)
 
         self.checkbox_days = []
-        for day in [('Пн', '#fff'), ('Вт', '#fff'), ('Ср', '#fff'), ('Чт', '#fff'),
-                    ('Пт', '#fff'), ('Сб', '#fff'), ('Вс', '#ffffff')]:
-            self.checkbox_days.append(PyCheckBoxDay(day[0], self.area_days_of_week, circle_color='#d4ae17',
-                                                    text_color=day[1], active_text_color='#d4ae17'))
+        for day in ['Пн', 'Вт', "Ср", "Чт", "Пт", "Сб", "Вс"]:
+            self.checkbox_days.append(PyCheckBoxDay(day, self.area_days_of_week, circle_color='#d4ae17',
+                                                    text_color=color_days_of_week, active_text_color='#d4ae17'))
             self.horizontal_days_of_week_layout.addWidget(self.checkbox_days[-1])
 
         for day in range(7):
@@ -108,17 +117,16 @@ class PyAlarmClockSetting(QDialog):
         self.vertical_layout.addWidget(self.music_combo, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.button_box, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        # set default
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.container)
         self.setLayout(self.layout)
 
     def acceptSetting(self) -> None:
-        self._alarm_clock.setTimeAndIcon(self.time_alarm_clock_setting.time())
-        self._alarm_clock.setMusic(self.list_music[self.music_combo.currentIndex()], self.music_combo.currentIndex())
-        self._alarm_clock.enableAlarmClock()
-        self._alarm_clock.setDaysOfWeek(self.checkbox_days)
-        self._alarm_clock.body.determiningNextAlarmClock()
+        self.alarm_clock.setTimeAndIcon(self.time_alarm_clock_setting.time())
+        self.alarm_clock.setMusic(self.list_music[self.music_combo.currentIndex()], self.music_combo.currentIndex())
+        self.alarm_clock.enableAlarmClock()
+        self.alarm_clock.setDaysOfWeek(self.checkbox_days)
+        self.alarm_clock.body.determiningNextAlarmClock()
         self.accept()
 
     def rejectSetting(self) -> None:
@@ -129,12 +137,5 @@ class PyAlarmClockSetting(QDialog):
             self.reject()
 
     def removeAlarmClock(self) -> None:
-        self._alarm_clock.removeAlarmClock()
+        self.alarm_clock.removeAlarmClock()
         self.close()
-
-
-if __name__ == '__main__':
-    app = QApplication([])
-    window = PyAlarmClockSetting()
-    window.show()
-    app.exec()

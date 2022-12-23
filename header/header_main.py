@@ -1,14 +1,19 @@
-from PyQt6.QtCore import *
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
-
-import sys
+from PyQt6.QtCore import QTimer, QRect, QDateTime, Qt
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QMainWindow, QWidget, QFrame, QLabel
 
 from header.close_button import PyCloseButton
 
 
 class Ui_Header:
-    def __init__(self, MainWindow, parent):
+    def __init__(
+            self,
+            MainWindow: QMainWindow,
+            parent: QWidget,
+            label_font_family: str = "Segoe UI",
+            label_font_point_size: int = 75,
+            color_label: str = "#ffffff"
+    ):
         self._MainWindow = MainWindow
 
         self.header = QFrame(parent)
@@ -20,8 +25,8 @@ class Ui_Header:
         self.close_button.clicked.connect(self.close)
 
         self.font_time = QFont()
-        self.font_time.setFamily("Segoe UI")
-        self.font_time.setPointSize(75)
+        self.font_time.setFamily(label_font_family)
+        self.font_time.setPointSize(label_font_point_size)
 
         self.timer_update_time = QTimer()
         self.timer_update_time.setInterval(1000)  # time in millisecond
@@ -32,11 +37,10 @@ class Ui_Header:
         self.time_label.setGeometry(QRect(190, 80, 240, 85))
         self.time_label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         self.time_label.setFont(self.font_time)
-        # избавиться от css
-        self.time_label.setProperty("class", "time_label")
+        self.time_label.setStyleSheet(f"color: {color_label}")
 
-    def updateCurrentTime(self):
+    def updateCurrentTime(self) -> None:
         self.time_label.setText(QDateTime.currentDateTime().toString("hh:mm"))
 
-    def close(self):
+    def close(self) -> None:
         self._MainWindow.close()

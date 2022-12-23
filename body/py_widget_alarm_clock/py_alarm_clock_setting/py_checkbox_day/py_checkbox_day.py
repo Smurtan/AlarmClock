@@ -1,19 +1,18 @@
-from PyQt6.QtCore import *
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtCore import Qt, QPoint, QRect
+from PyQt6.QtGui import QPainter, QColor, QPainterPath, QPen, QPaintEvent
+from PyQt6.QtWidgets import QCheckBox, QWidget
 
 
 class PyCheckBoxDay(QCheckBox):
     def __init__(
             self,
-            label="пн",
-            parent=None,
-            circle_color="#fff",
-            text_color="#fff",
-            active_text_color="fff"
+            label: str = "пн",
+            parent: QWidget = None,
+            circle_color: str = "#d4ae17",
+            text_color: str = "#ffffff",
+            active_text_color: str = "#d4ae17"
     ):
         QCheckBox.__init__(self, parent)
-
         self.setFixedSize(len(label) * 18 + 6, 42)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
@@ -23,10 +22,10 @@ class PyCheckBoxDay(QCheckBox):
         self._text_color = text_color
         self._active_text_color = active_text_color
 
-    def hitButton(self, pos: QPoint):
+    def hitButton(self, pos: QPoint) -> bool:
         return self.contentsRect().contains(pos)
 
-    def paintEvent(self, e):
+    def paintEvent(self, event: QPaintEvent) -> None:
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
 

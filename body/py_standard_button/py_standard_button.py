@@ -1,18 +1,18 @@
-from PyQt6.QtCore import *
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtGui import QPainter, QColor, QPaintEvent
+from PyQt6.QtWidgets import QWidget, QPushButton
 
 
 class PyStandardButton(QPushButton):
     def __init__(
             self,
-            label="",
-            parent=None,
-            width=92,
-            height=25,
-            bg_color="#cccccc",
-            text_color="#fff",
-            point_size=16
+            label: str = "",
+            parent: QWidget = None,
+            width: int = 92,
+            height: int = 25,
+            bg_color: str = "#cccccc",
+            text_color: str = "#ffffff",
+            point_size: int = 16
     ):
         QPushButton.__init__(self, parent)
 
@@ -25,7 +25,7 @@ class PyStandardButton(QPushButton):
         self._bg_color = bg_color
         self._text_color = text_color
 
-    def paintEvent(self, e):
+    def paintEvent(self, a0: QPaintEvent) -> None:
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
 

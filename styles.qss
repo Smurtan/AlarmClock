@@ -1,18 +1,5 @@
 .circle_bg {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #000025, stop: 1.0 #18054c);
     border-radius: 310px;
-}
-
-.header {
-    border-radius: 50px;
-}
-
-.close_button {
-    color: rgba(0, 0, 0, 50);
-}
-
-.time_label {
-    color: #f8f8f2;
 }
 
 .alarm_clock {
@@ -39,4 +26,21 @@
 
 QComboBox {
     combobox-popup: 0;
+}
+
+QTimeEdit {
+    border-radius: 8px;
+    border: 1px solid #ffffff;
+}
+
+QTimeEdit::down-button {
+    border: 1px solid #000000;
+    border-bottom-right-radius: 8px;
+    width: 15px;
+}
+
+QTimeEdit::up-button {
+    border: 1px solid #000000;
+    border-top-right-radius: 8px;
+    width: 15px;
 }

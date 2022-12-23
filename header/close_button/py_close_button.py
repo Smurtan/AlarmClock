@@ -1,17 +1,17 @@
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QPainter, QPen, QPaintEvent, QColor, QFont
+from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtWidgets import QWidget, QPushButton
 
 
 class PyCloseButton(QPushButton):
     def __init__(
             self,
-            parent=None,
-            width=340,
-            height=40,
-            bg_color="#bb2323",
-            active_color="225D44FF",
-            stroke_color="FFFFFF"
+            parent: QWidget = None,
+            width: int = 340,
+            height: int = 40,
+            bg_color: str = "#bb2323",
+            active_color: str = "#225D44",
+            stroke_color: str = "#ffffff"
     ):
         QPushButton.__init__(self, parent)
 

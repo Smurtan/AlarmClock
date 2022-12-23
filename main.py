@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
             }
         }
 
-        self.current_time_of_day = 'night'
+        self.current_time_of_day = self.time_of_day[0]
 
         # EXTERNAL CONTAINER
         self.container = QFrame()
@@ -75,7 +75,8 @@ class MainWindow(QMainWindow):
         self.circle_bg.setGeometry(QRect(0, 0, 620, 620))
         self.circle_bg.setProperty("class", "circle_bg")
         self.circle_bg.setStyleSheet(".circle_bg {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-                                     "stop: 0 %s, stop: 1.0 %s)}" % ('#000025', '#18054c'))
+                                     "stop: 0 %s, stop: 1.0 %s)}" % (self.design_style[self.current_time_of_day]['circle_bg'][0],
+                                                                     self.design_style[self.current_time_of_day]['circle_bg'][1]))
 
         self.header = Ui_Header(self, self.circle_bg)
         self.body = Ui_Body(self.circle_bg, self.design_style)
@@ -105,7 +106,7 @@ class MainWindow(QMainWindow):
         delta = event.pos() - self._old_pos
         self.move(self.pos() + delta)
 
-    def determiningNextStyleApplications(self):
+    def determiningNextStyleApplications(self) -> None:
         time_to_next_change = 24 * 60 * 60
 
         next_time_of_day = 1
@@ -124,14 +125,14 @@ class MainWindow(QMainWindow):
         self.timer_change_style.setInterval(time_to_next_change * 1000)  # time in millisecond
         self.timer_change_style.start()
 
-    def changeStyleApplication(self, time_of_day):
+    def changeStyleApplication(self, time_of_day) -> None:
         self.circle_bg.setStyleSheet(".circle_bg {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
                                      "stop: 0 %s, stop: 1.0 %s)}" % (self.design_style[time_of_day]['circle_bg'][0],
                                                                      self.design_style[time_of_day]['circle_bg'][1]))
 
         self.body.changeStyleBody(time_of_day)
 
-    def savingData(self):
+    def savingData(self) -> None:
         data_file = []
         with open("appdata", "wb") as appdata:
             for alarm_clock in self.body.list_alarm_clocks:
@@ -144,7 +145,7 @@ class MainWindow(QMainWindow):
                 data_file.append(data_alarm_clock)
             pickle.dump(data_file, appdata)
 
-    def close(self):
+    def close(self) -> None:
         self.savingData()
         sys.exit()
 
