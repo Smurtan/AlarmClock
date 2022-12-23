@@ -172,7 +172,6 @@ class Ui_Body:
             pass
 
     def callingAlarmClock(self) -> None:
-        # после пересохранения не работает
         if self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].alarm_clock_toggle.isChecked():
             stop_widget = PyAlarmClockStop(self.list_alarm_clocks[self.serial_number_nearest_alarm_clock],
                                            self.list_alarm_clocks[self.serial_number_nearest_alarm_clock].music[
