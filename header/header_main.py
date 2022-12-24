@@ -18,7 +18,7 @@ class Ui_Header:
 
         self.header = QFrame(parent)
         self.header.setGeometry(QRect(0, 0, 620, 300))
-        self.header.setProperty("class", "header")
+        self.header.setObjectName("header")
 
         self.close_button = PyCloseButton(self.header)
         self.close_button.setGeometry(160, 8, 340, 45)
@@ -37,7 +37,7 @@ class Ui_Header:
         self.time_label.setGeometry(QRect(190, 80, 240, 85))
         self.time_label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         self.time_label.setFont(self.font_time)
-        self.time_label.setStyleSheet(f"color: {color_label}")
+        self.time_label.setObjectName("time_label")
 
     def updateCurrentTime(self) -> None:
         self.time_label.setText(QDateTime.currentDateTime().toString("hh:mm"))

@@ -12,49 +12,42 @@ from body import Ui_Body
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, application_class):
         super().__init__()
 
-        self.time_of_day = ['night', 'morning', 'day', 'evening']
+        self.time_of_day = ['morning', 'morning', 'morning', 'morning']
+        self.application_class = application_class
 
         self.design_style = {
             'night': {
                 'start_time': QTime(22, 0),
-                'circle_bg': ('#000025', '#18054c'),
                 'alarm_clock': ('#7a26c9', '#b641e6'),
-                'toggle': ('#0faaff', '#330ba2'),
+                'toggle': ('#330ba2', '#0faaff'),
                 'alarm_clock_setting': {
-                    'bg_color': ('#220240', '#45206a'),
                     'bg_button': '#8a56bc'
                 }
             },
             'morning': {
                 'start_time': QTime(3, 0),
-                'circle_bg': ('#7d1fdd', '#e9863d'),
                 'alarm_clock': ('#e854a6', '#48e89c'),
-                'toggle': ('#00bcff', '#777777'),
+                'toggle': ('#777777', '#00bcff'),
                 'alarm_clock_setting': {
-                    'bg_color': ('#a12469', '#b86646'),
                     'bg_button': '#36cf86'
                 }
             },
             'day': {
                 'start_time': QTime(9, 0),
-                'circle_bg': ('#336cbb', '#fffa66'),
                 'alarm_clock': ('#e018e7', '#1dd7e0'),
-                'toggle': ('#00bcff', '#777777'),
+                'toggle': ('#777777', '#00bcff'),
                 'alarm_clock_setting': {
-                    'bg_color': ('#063f73', '#bf1dc5'),
                     'bg_button': '#a863ea'
                 }
             },
             'evening': {
                 'start_time': QTime(16, 0),
-                'circle_bg': ('#c65909', '#3bc4a2'),
                 'alarm_clock': ('#c24ae7', '#ece92a'),
-                'toggle': ('#00bcff', '#777777'),
+                'toggle': ('#777777', '#00bcff'),
                 'alarm_clock_setting': {
-                    'bg_color': ('#982aba', '#56aa85'),
                     'bg_button': '#8a56bc'
                 }
             }
@@ -73,10 +66,7 @@ class MainWindow(QMainWindow):
 
         self.circle_bg = QFrame(self.container)
         self.circle_bg.setGeometry(QRect(0, 0, 620, 620))
-        self.circle_bg.setProperty("class", "circle_bg")
-        self.circle_bg.setStyleSheet(".circle_bg {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-                                     "stop: 0 %s, stop: 1.0 %s)}" % (self.design_style[self.current_time_of_day]['circle_bg'][0],
-                                                                     self.design_style[self.current_time_of_day]['circle_bg'][1]))
+        self.circle_bg.setObjectName("circle_bg")
 
         self.header = Ui_Header(self, self.circle_bg)
         self.body = Ui_Body(self.circle_bg, self.design_style)
@@ -125,10 +115,9 @@ class MainWindow(QMainWindow):
         self.timer_change_style.setInterval(time_to_next_change * 1000)  # time in millisecond
         self.timer_change_style.start()
 
-    def changeStyleApplication(self, time_of_day) -> None:
-        self.circle_bg.setStyleSheet(".circle_bg {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-                                     "stop: 0 %s, stop: 1.0 %s)}" % (self.design_style[time_of_day]['circle_bg'][0],
-                                                                     self.design_style[time_of_day]['circle_bg'][1]))
+    def changeStyleApplication(self, time_of_day: str) -> None:
+        with open(f"Styles/{time_of_day}.qss", "r") as style_file:
+            self.application_class.setStyleSheet(style_file.read())
 
         self.body.changeStyleBody(time_of_day)
 
@@ -154,8 +143,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create('Fusion'))
 
-    window = MainWindow()
-    with open("styles.qss", "r") as file:
-        app.setStyleSheet(file.read())
+    window = MainWindow(app)
     window.show()
     app.exec()

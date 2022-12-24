@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QTime, QDate, QRect
 from PyQt6.QtGui import QFont, QPixmap
-from PyQt6.QtWidgets import QPushButton, QWidget, QGroupBox, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt6.QtWidgets import QPushButton, QWidget, QFrame, QLabel, QHBoxLayout, QVBoxLayout
 
 from body.py_widget_alarm_clock.py_toggle import PyToggle
 from body.py_widget_alarm_clock.py_alarm_clock_setting import PyAlarmClockSetting
@@ -18,9 +18,7 @@ class PyAlarmClock(QWidget):
             condition_toggle: bool = True,
             family_fonts: str = "Segoe UI",
             point_size: int = 30,
-            color_font: str = "#ffffff",
             color_gradient_bg: tuple = ("#7a26c9", "#b641e6"),
-            color_alarm_clock_setting_gradient: tuple = ('#220240', '#45206a'),
             icon_day_name: str = "icon_sun.png",
             icon_night_name: str = "icon_moon.png",
             height_alarm_clock: int = 100,
@@ -33,8 +31,6 @@ class PyAlarmClock(QWidget):
         self._height_alarm_clock = height_alarm_clock
 
         self._first_color_gradient_bg, self._second_color_gradient_bg = color_gradient_bg
-
-        self.color_gradient_alarm_clock_setting = color_alarm_clock_setting_gradient
 
         self._list_alarm_clock = list_alarm_clock
         self.serial_number = len(self._list_alarm_clock)
@@ -57,23 +53,25 @@ class PyAlarmClock(QWidget):
         self.alarm_clock = QPushButton()
         self.alarm_clock.clicked.connect(self.clicked)
         self.alarm_clock.setMinimumSize(width_alarm_clock, height_alarm_clock)
-        self.alarm_clock.setProperty("class", "alarm_clock")
+        self.alarm_clock.setObjectName("alarm_clock")
 
         # CREAT THE AREA WITH THE ALARM TIME AND THE ICON, FOR LEFT ALIGNMENT
-        self._space_for_time = QGroupBox(self.alarm_clock)
+        self._space_for_time = QFrame(self.alarm_clock)
         self._space_for_time.setFixedSize(200, 80)
-        self._space_for_time.setProperty("class", "space_for_time")
+        self._space_for_time.setObjectName("space_for_time")
 
         self._alarm_clock_icon = QLabel(self._space_for_time)
 
         self._alarm_clock_time = QLabel(self._space_for_time)
         self._alarm_clock_time.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
-        self._alarm_clock_time.setStyleSheet(f'color: {color_font}')
+        self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
+        self._alarm_clock_time.setObjectName("alarm_clock_time")
         self.time = time
 
         self.setTimeAndIcon(time)
 
-        self.alarm_clock_toggle = PyToggle()
+        self.alarm_clock_toggle = PyToggle(bg_color=self.body.design_style[self.body.time_of_day]["toggle"][0],
+                                           active_color=self.body.design_style[self.body.time_of_day]["toggle"][1])
         self.alarm_clock_toggle.setChecked(condition_toggle)
         self.alarm_clock_toggle.clicked.connect(self.changeAlarmClockStatusStyle)
 
@@ -122,12 +120,14 @@ class PyAlarmClock(QWidget):
 
     def changeAlarmClockStatusStyle(self) -> None:
         if self.alarm_clock_toggle.isChecked():
-            self.alarm_clock.setStyleSheet(".alarm_clock {background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, "
-                                           "y2: 0.55, stop: 0 %s, stop: 1.0 %s)}" % (self._first_color_gradient_bg,
-                                                                                     self._second_color_gradient_bg))
+            self.alarm_clock.setStyleSheet(
+                "QPushButton#alarm_clock {background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, "
+                "y2: 0.55, stop: 0 %s, stop: 1.0 %s)}" % (self._first_color_gradient_bg,
+                                                          self._second_color_gradient_bg))
             self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
         else:
-            self.alarm_clock.setStyleSheet(".alarm_clock {background-color: %s}" % self._first_color_gradient_bg)
+            self.alarm_clock.setStyleSheet(
+                "QPushButton#alarm_clock {background-color: %s}" % self._first_color_gradient_bg)
             self._alarm_clock_time.setFont(self._font_alarm_clock_time_disable)
 
     def enableAlarmClock(self) -> None:
@@ -137,7 +137,6 @@ class PyAlarmClock(QWidget):
     def changeStyleAlarmClock(self, time_of_day: str) -> None:
         self._first_color_gradient_bg, self._second_color_gradient_bg = self.body.design_style[time_of_day][
             'alarm_clock']
-        self.color_gradient_alarm_clock_setting = self.body.design_style[time_of_day]['alarm_clock_setting']['bg_color']
         self.changeAlarmClockStatusStyle()
 
     def checkTimeAlarmClock(self) -> bool:
@@ -150,7 +149,9 @@ class PyAlarmClock(QWidget):
         setting_alarm_clock = PyAlarmClockSetting(self, selected_time=self.time,
                                                   selected_days_of_week=self.check_days_of_week,
                                                   select_music=self.music,
-                                                  bg_color_gradient=self.color_gradient_alarm_clock_setting)
+                                                  bg_button_color=
+                                                  self.body.design_style[self.body.time_of_day]["alarm_clock_setting"][
+                                                      "bg_button"])
         return setting_alarm_clock.exec()
 
     def clicked(self) -> None:
