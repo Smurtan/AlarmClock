@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QPainter, QPen, QPaintEvent, QColor, QFont
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtCore import Qt, QPoint, QTimer, pyqtSlot
 from PyQt6.QtWidgets import QWidget, QPushButton
 
 

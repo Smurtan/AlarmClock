@@ -122,7 +122,7 @@ class PyAlarmClock(QWidget):
         if self.alarm_clock_toggle.isChecked():
             self.alarm_clock.setStyleSheet(
                 "QPushButton#alarm_clock {background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, "
-                "y2: 0.55, stop: 0 %s, stop: 1.0 %s)}" % (self._first_color_gradient_bg,
+                "y2: 0.55, stop: 0 %s, stop: 0.9 %s)}" % (self._first_color_gradient_bg,
                                                           self._second_color_gradient_bg))
             self._alarm_clock_time.setFont(self._font_alarm_clock_time_enable)
         else:
@@ -137,6 +137,8 @@ class PyAlarmClock(QWidget):
     def changeStyleAlarmClock(self, time_of_day: str) -> None:
         self._first_color_gradient_bg, self._second_color_gradient_bg = self.body.design_style[time_of_day][
             'alarm_clock']
+        self.alarm_clock_toggle.changeStyle(self.body.design_style[time_of_day]['toggle'][0],
+                                            self.body.design_style[time_of_day]['toggle'][1])
         self.changeAlarmClockStatusStyle()
 
     def checkTimeAlarmClock(self) -> bool:

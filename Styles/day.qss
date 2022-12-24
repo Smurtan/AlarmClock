@@ -1,11 +1,10 @@
 QFrame#circle_bg {
     border-radius: 310px;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0.0 #336cbb, stop: 1.0 #fffa66);
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0.0 #3986ce, stop: 1.0 #fffa66);
 }
 
 QPushButton#alarm_clock {
     border-radius: 50%;
-    background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, y2: 0.55, stop: 0 #e018e7, stop: 1.0 #1dd7e0);
 }
 
 QLabel#alarm_clock_time {
@@ -38,7 +37,7 @@ QFrame#alarm_clock_setting {
 QComboBox {
     border-radius: 8px;
     combobox-popup: 0;
-    background-color: #8a56bc;
+    background-color: #9d3cd0;
 }
 
 QComboBox::drop-down {
@@ -46,14 +45,14 @@ QComboBox::drop-down {
 }
 
 QComboBox::drop-down:hover {
-    border: 1px solid #8a56bc;
+    border: none;
     background-color: #5a248e;
     border-bottom-right-radius: 8px;
     border-top-right-radius: 8px;
 }
 
 QComboBox::down-arrow {
-    image: url(body/image/down_arrow.svg);
+    image: url(body/image/day/down_arrow.svg);
 }
 
 QComboBox QAbstractItemView {
@@ -67,7 +66,7 @@ QComboBox QAbstractSlider {
 QTimeEdit {
     border-radius: 8px;
     border: none;
-    background-color: #8a56bc;
+    background-color: #9d3cd0;
 }
 
 QTimeEdit::down-button {
@@ -77,12 +76,12 @@ QTimeEdit::down-button {
 }
 
 QTimeEdit::down-button:hover {
-    border: 1px solid #8a56bc;
-    background-color: #5a248e;
+    border: none;
+    background-color: #7f1bbd;
 }
 
 QTimeEdit::down-arrow {
-    image: url(body/image/down_arrow.svg);
+    image: url(body/image/day/down_arrow.svg);
 }
 
 QTimeEdit::up-button {
@@ -92,10 +91,10 @@ QTimeEdit::up-button {
 }
 
 QTimeEdit::up-button:hover {
-    border: 1px solid #8a56bc;
+    border: none;
     background-color: #5a248e;
 }
 
 QTimeEdit::up-arrow {
-    image: url(body/image/up_arrow.svg);
+    image: url(body/image/day/up_arrow.svg);
 }

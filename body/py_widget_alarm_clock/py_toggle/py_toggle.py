@@ -74,3 +74,7 @@ class PyToggle(QCheckBox):
             p.drawText(QPoint(self._emoji_position, 21), "\U0001F60A")  # emoticons in unicode
 
         p.end()
+
+    def changeStyle(self, bg_color: str, activate_color: str) -> None:
+        self._bg_color = bg_color
+        self._activate_color = activate_color

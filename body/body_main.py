@@ -103,7 +103,8 @@ class Ui_Body:
 
     def addNewAlarmClock(self) -> None:
         new_alarm_clock = PyAlarmClock(self, self.alarm_clocks_area, self.list_alarm_clocks,
-                                       height_alarm_clock=self.height_alarm_clock
+                                       height_alarm_clock=self.height_alarm_clock,
+                                       color_gradient_bg=self.design_style[self.time_of_day]["alarm_clock"]
                                        )
         self.list_alarm_clocks.append(new_alarm_clock)
 
