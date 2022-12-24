@@ -1,0 +1,101 @@
+QFrame#circle_bg {
+    border-radius: 310px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0.0 #7d1fdd, stop: 1.0 #e9863d);
+}
+
+QPushButton#alarm_clock {
+    border-radius: 50%;
+    background-color: qlineargradient(x1: 0.2, y1: 0.45, x2: 1, y2: 0.55, stop: 0 #e854a6, stop: 1.0 #48e89c);
+}
+
+QLabel#alarm_clock_time {
+    color: #ffffff;
+}
+
+QLabel#setting_label {
+    color: #ffffff;
+}
+
+QLabel#time_label {
+    color: #ffffff;
+}
+
+QFrame#alarm_clocks_area {
+    background: none;
+    border: none;
+}
+
+QScrollArea#alarm_clocks_scroll_area {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+QFrame#alarm_clock_setting {
+    border-radius: 50%;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #a12469, stop: 1.0 #b86646)
+}
+
+QComboBox {
+    border-radius: 8px;
+    combobox-popup: 0;
+    background-color: #c26297;
+}
+
+QComboBox::drop-down {
+    border: none;
+}
+
+QComboBox::drop-down:hover {
+    border: 1px solid #8a56bc;
+    background-color: #5a248e;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+QComboBox::down-arrow {
+    image: url(body/image/down_arrow.svg);
+}
+
+QComboBox QAbstractItemView {
+    background-color: #d4b9ef;
+}
+
+QComboBox QAbstractSlider {
+    background-color: #d4b9ef;
+}
+
+QTimeEdit {
+    border-radius: 8px;
+    border: none;
+    background-color: #c26297;
+}
+
+QTimeEdit::down-button {
+    border: none;
+    border-bottom-right-radius: 8px;
+    width: 18px;
+}
+
+QTimeEdit::down-button:hover {
+    border: 1px solid #8a56bc;
+    background-color: #5a248e;
+}
+
+QTimeEdit::down-arrow {
+    image: url(body/image/down_arrow.svg);
+}
+
+QTimeEdit::up-button {
+    border: none;
+    border-top-right-radius: 8px;
+    width: 18px;
+}
+
+QTimeEdit::up-button:hover {
+    border: 1px solid #8a56bc;
+    background-color: #5a248e;
+}
+
+QTimeEdit::up-arrow {
+    image: url(body/image/up_arrow.svg);
+}

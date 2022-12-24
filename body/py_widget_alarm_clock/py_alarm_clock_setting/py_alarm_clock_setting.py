@@ -16,10 +16,9 @@ class PyAlarmClockSetting(QDialog):
             selected_time: QTime = QTime.currentTime(),
             selected_days_of_week: list = None,
             select_music: dict = None,
-            bg_color_gradient: tuple = ('#220240', '#45206a'),
-            color_label: str = '#ffffff',
+            bg_button_color: str = "#8a56bc",
             family_label: str = "Segoe UI",
-            size_label: int = 22,
+            size_label: int = 25,
             color_days_of_week: str = "#ffffff"
     ):
         super().__init__(alarm_clock)
@@ -32,11 +31,7 @@ class PyAlarmClockSetting(QDialog):
 
         self.container = QFrame()
         self.container.setFixedSize(500, 280)
-        self.container.setProperty("class", "alarm_clock_setting")
-        self.container.setStyleSheet(
-            ".alarm_clock_setting {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-            "stop: 0 %s, stop: 1.0 %s)}" % (bg_color_gradient[0], bg_color_gradient[1]))
-
+        self.container.setObjectName("alarm_clock_setting")
         if selected_days_of_week is None:
             self._selected_days_of_week = [False for i in range(7)]
         else:
@@ -44,9 +39,9 @@ class PyAlarmClockSetting(QDialog):
 
         self.alarm_clock = alarm_clock
 
-        self.time_alarm_clock_label = QLabel("Когда вы хотите меня услышать?")
-        self.time_alarm_clock_label.setFont(QFont(family_label, size_label))
-        self.time_alarm_clock_label.setStyleSheet(f'color: {color_label}')
+        self.setting_label = QLabel("Когда вы хотите меня услышать?")
+        self.setting_label.setFont(QFont(family_label, size_label))
+        self.setting_label.setObjectName("setting_label")
 
         self.font_time_alarm_clock_setting = QFont()
         self.font_time_alarm_clock_setting.setFamily(family_label)
@@ -57,6 +52,7 @@ class PyAlarmClockSetting(QDialog):
         self.time_alarm_clock_setting.setMinimumSize(90, 40)
         self.time_alarm_clock_setting.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.time_alarm_clock_setting.setFont(self.font_time_alarm_clock_setting)
+        self.time_alarm_clock_setting.setStyleSheet("color: #ffffff")
 
         self.area_days_of_week = QFrame()
 
@@ -89,11 +85,11 @@ class PyAlarmClockSetting(QDialog):
 
         self.control_button = QFrame(self.button_box)
         self.control_button.setContentsMargins(0, 0, 0, 0)
-        self.control_button.setProperty("class", "control_button")
+        self.control_button.setObjectName("control_button")
 
         self.button_OK = PyStandardButton("OK", width=92, height=25, bg_color="#f6c608", text_color="#250246", point_size=18)
         self.button_OK.clicked.connect(self.acceptSetting)
-        self.button_Cancel = PyStandardButton("Cancel", width=92, height=25, bg_color="#8a56bc",
+        self.button_Cancel = PyStandardButton("Cancel", width=92, height=25, bg_color=bg_button_color,
                                               text_color="#ffffff", point_size=18)
         self.button_Cancel.clicked.connect(self.rejectSetting)
 
@@ -102,7 +98,7 @@ class PyAlarmClockSetting(QDialog):
         self.horizontal_layout_control_button.addWidget(self.button_OK)
         self.horizontal_layout_control_button.addWidget(self.button_Cancel)
 
-        self.button_Delete = PyStandardButton("Delete", width=92, height=25, bg_color="#8a56bc",
+        self.button_Delete = PyStandardButton("Delete", width=92, height=25, bg_color=bg_button_color,
                                               text_color="#ffffff", point_size=18)
         self.button_Delete.clicked.connect(self.removeAlarmClock)
 
@@ -111,7 +107,7 @@ class PyAlarmClockSetting(QDialog):
         self.button_horizontal_layout.addWidget(self.control_button, alignment=Qt.AlignmentFlag.AlignRight)
 
         self.vertical_layout = QVBoxLayout(self.container)
-        self.vertical_layout.addWidget(self.time_alarm_clock_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        self.vertical_layout.addWidget(self.setting_label, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.time_alarm_clock_setting, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.area_days_of_week, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.vertical_layout.addWidget(self.music_combo, alignment=Qt.AlignmentFlag.AlignHCenter)

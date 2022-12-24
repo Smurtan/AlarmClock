@@ -24,13 +24,13 @@ class Ui_Body:
 
         self.alarm_clocks_area = QFrame()
         self.alarm_clocks_area.setGeometry(QRect(0, 0, 620, 340))
-        self.alarm_clocks_area.setProperty("class", "alarm_clocks_area")
+        self.alarm_clocks_area.setObjectName("alarm_clocks_area")
 
         self.alarm_clocks_scroll_area = QScrollArea(parent)
         self.alarm_clocks_scroll_area.setGeometry(QRect(0, 230, 620, 340))
         self.alarm_clocks_scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.alarm_clocks_scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.alarm_clocks_scroll_area.setProperty("class", "alarm_clocks_scroll_area")
+        self.alarm_clocks_scroll_area.setObjectName("alarm_clocks_scroll_area")
         self.alarm_clocks_scroll_area.setWidget(self.alarm_clocks_area)
 
         self.vertical_layout_alarm_clocks = QVBoxLayout(self.alarm_clocks_area)
@@ -52,10 +52,7 @@ class Ui_Body:
                         self.list_data_alarm_clock[alarm_clock]['check_days_of_week'],
                         self.list_data_alarm_clock[alarm_clock]['music'],
                         self.list_data_alarm_clock[alarm_clock]['condition_toggle'],
-                        height_alarm_clock=self.height_alarm_clock,
-                        color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],
-                        color_alarm_clock_setting_gradient=self.design_style[self.time_of_day]['alarm_clock_setting'][
-                            'bg_color']
+                        height_alarm_clock=self.height_alarm_clock
                     ))
                     # EACH ALARM CLOCKS IS ALIGNED SEPARATELY, AS IT HAS ITS OWN SIZE
                     self.vertical_layout_alarm_clocks.addWidget(self.list_alarm_clocks[-1],
@@ -106,10 +103,7 @@ class Ui_Body:
 
     def addNewAlarmClock(self) -> None:
         new_alarm_clock = PyAlarmClock(self, self.alarm_clocks_area, self.list_alarm_clocks,
-                                       height_alarm_clock=self.height_alarm_clock,
-                                       color_gradient_bg=self.design_style[self.time_of_day]['alarm_clock'],
-                                       color_alarm_clock_setting_gradient=
-                                       self.design_style[self.time_of_day]['alarm_clock_setting']['bg_color']
+                                       height_alarm_clock=self.height_alarm_clock
                                        )
         self.list_alarm_clocks.append(new_alarm_clock)
 
@@ -182,5 +176,6 @@ class Ui_Body:
 
     def changeStyleBody(self, time_of_day: str) -> None:
         self.time_of_day = time_of_day
+
         for alarm_clock in self.list_alarm_clocks:
             alarm_clock.changeStyleAlarmClock(time_of_day)
