@@ -11,8 +11,7 @@ class Ui_Header:
             MainWindow: QMainWindow,
             parent: QWidget,
             label_font_family: str = "Segoe UI",
-            label_font_point_size: int = 75,
-            color_label: str = "#ffffff"
+            label_font_point_size: int = 75
     ):
         self._MainWindow = MainWindow
 
@@ -22,7 +21,7 @@ class Ui_Header:
 
         self.close_button = PyCloseButton(self.header)
         self.close_button.setGeometry(160, 8, 340, 45)
-        self.close_button.clicked.connect(self.close)
+        self.close_button.clicked.connect(self.minimized)
 
         self.font_time = QFont()
         self.font_time.setFamily(label_font_family)
@@ -42,5 +41,5 @@ class Ui_Header:
     def updateCurrentTime(self) -> None:
         self.time_label.setText(QDateTime.currentDateTime().toString("hh:mm"))
 
-    def close(self) -> None:
-        self._MainWindow.close()
+    def minimized(self) -> None:
+        self._MainWindow.minimizedWindow()

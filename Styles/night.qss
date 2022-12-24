@@ -53,7 +53,7 @@ QComboBox::drop-down:hover {
 }
 
 QComboBox::down-arrow {
-    image: url(body/image/down_arrow.svg);
+    image: url(body/image/night/down_arrow.svg);
 }
 
 QComboBox QAbstractItemView {
@@ -82,7 +82,7 @@ QTimeEdit::down-button:hover {
 }
 
 QTimeEdit::down-arrow {
-    image: url(body/image/down_arrow.svg);
+    image: url(body/image/night/down_arrow.svg);
 }
 
 QTimeEdit::up-button {
@@ -97,5 +97,5 @@ QTimeEdit::up-button:hover {
 }
 
 QTimeEdit::up-arrow {
-    image: url(body/image/up_arrow.svg);
+    image: url(body/image/night/up_arrow.svg);
 }

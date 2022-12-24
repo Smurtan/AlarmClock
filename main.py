@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
     def __init__(self, application_class):
         super().__init__()
 
-        self.time_of_day = ['morning', 'morning', 'morning', 'morning']
+        self.time_of_day = ['night', 'morning', 'day', 'evening']
         self.application_class = application_class
 
         self.design_style = {
@@ -30,23 +30,23 @@ class MainWindow(QMainWindow):
             'morning': {
                 'start_time': QTime(3, 0),
                 'alarm_clock': ('#e854a6', '#48e89c'),
-                'toggle': ('#777777', '#00bcff'),
+                'toggle': ('#8c2f63', '#00bcff'),
                 'alarm_clock_setting': {
-                    'bg_button': '#36cf86'
+                    'bg_button': '#c26297'
                 }
             },
             'day': {
                 'start_time': QTime(9, 0),
                 'alarm_clock': ('#e018e7', '#1dd7e0'),
-                'toggle': ('#777777', '#00bcff'),
+                'toggle': ('#8f0a94', '#00bcff'),
                 'alarm_clock_setting': {
-                    'bg_button': '#a863ea'
+                    'bg_button': '#9d3cd0'
                 }
             },
             'evening': {
                 'start_time': QTime(16, 0),
                 'alarm_clock': ('#c24ae7', '#ece92a'),
-                'toggle': ('#777777', '#00bcff'),
+                'toggle': ('#771197', '#0faaff'),
                 'alarm_clock_setting': {
                     'bg_button': '#8a56bc'
                 }
@@ -85,6 +85,8 @@ class MainWindow(QMainWindow):
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
             self._old_pos = event.pos()
+        if event.button() == Qt.MouseButton.RightButton and self.header.close_button.underMouse():
+            self.close()
 
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
@@ -133,6 +135,9 @@ class MainWindow(QMainWindow):
                 }
                 data_file.append(data_alarm_clock)
             pickle.dump(data_file, appdata)
+
+    def minimizedWindow(self):
+        self.showMinimized()
 
     def close(self) -> None:
         self.savingData()
