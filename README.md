@@ -1,8 +1,23 @@
 # Alarm Clock
 --------------------------------------------------------------------------------------------  
-I present to you an excellent design of an ordinary alarm clock, an application that does not need to be visited often. But this is because most alarm clocks are boring and similar to each other.  
-My alarm clock will delight its user with every opening, and here you will be greeted by a friendly, beautiful interface that will not let you get bored.  
-Depending on the time of day, you will see a different design of the application, which will add variety and will not get bored quickly.  
+I present to you an innovative alarm clock application.
+
+This alarm clock will delight its user every time it is opened. And also here you will be greeted by a friendly, beautiful interface that will not let you get bored.  
+
+Interface Features:
+- The application opens in a round window, without the standard windows buttons and frames;
+- There is a close application button at the top;
+- The current time is displayed below;
+- Next is a list of installed alarms that can be scrolled through and the alarm bars will change size.;
+- The moon or sun icon is displayed inside, depending on the time set on the alarm clock.;
+- Next is the time at which the alarm clock will be played;
+- There is a switch with a smiley face at the end of the bar, which displays the activity of the set alarm clock.;
+- It is worth noting that active alarms are filled with a gradient, while off alarms are filled with a solid color.;
+- At the bottom of the window there is a button for adding a new alarm clock;
+- When you click on the alarm bar, the alarm editing window opens (the same window opens when adding);
+- In the modal editing window, you can select the playback time, days of the week, and music that is downloaded from the PC file system.;
+
+Depending on the time of day, you will see a different design of the application, which will bring variety and will not let you get bored quickly.
 
 NIGHT INTERFACE  
 \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/  
